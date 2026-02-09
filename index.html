@@ -89,30 +89,45 @@ nav {
     font-weight: bold;
 }
 
+
+.nav-logo-img {
+    height: 70px;
+    width: auto;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo-img:hover {
+    transform: scale(1.05);
+}
+
 /* -------------------------------------------------------
    HERO SECTION
    ------------------------------------------------------- */
 .hero {
     text-align: center;
-    padding: 150px 20px;
+    padding: 180px 20px;
     animation: fadeIn 1s ease-out;
-    background: radial-gradient(circle at center, rgba(62, 39, 35, 0.4) 0%, rgba(44, 27, 24, 0) 70%);
+    background: radial-gradient(circle at center, rgba(62, 39, 35, 0.6) 0%, rgba(44, 27, 24, 0) 80%);
 }
 
-.hero h2 {
+.hero-title {
     font-family: 'Cinzel', serif;
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     color: var(--text-gold);
     margin-bottom: 20px;
-    line-height: 1.2;
+    line-height: 1.1;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    letter-spacing: 2px;
 }
 
-.hero-content p {
-    font-size: 1.2rem;
-    letter-spacing: 3px;
+.hero-subtitle {
+    font-size: 1.4rem;
+    letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--text-cream);
-    opacity: 0.8;
+    opacity: 0.9;
+    font-weight: 300;
 }
 
 .btn-hero {
@@ -172,9 +187,10 @@ nav {
 .product-card {
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .product-card:hover {
@@ -403,7 +419,8 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .hero h2 { font-size: 2.5rem; }
+    .hero-title { font-size: 2.8rem; }
+    .hero-subtitle { font-size: 1rem; }
     .newsletter-form { flex-direction: column; }
     .footer-content { grid-template-columns: 1fr; text-align: center; }
 }
@@ -711,7 +728,7 @@ footer {
     <nav>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
         <a href="#" class="logo">
-            <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" style="height: 50px; vertical-align: middle;">
+            <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" class="nav-logo-img">
         </a>
         <div class="nav-actions">
             <div class="search-box">
@@ -725,8 +742,8 @@ footer {
 
     <div class="hero">
         <div class="hero-content">
-            <p>The 2026 Collection</p>
-            <h2>Stay Grounded. Stay Rare.</h2>
+            <h1 class="hero-title">RARE ROOT<br>COLLECTIONS</h1>
+            <p class="hero-subtitle">The 2026 Collection</p>
             <button class="btn-hero" onclick="document.getElementById('exchange-grid').scrollIntoView({behavior: 'smooth'})">Explore Collection</button>
         </div>
     </div>
@@ -902,6 +919,7 @@ function renderCategory(categoryName, elementId) {
     items.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
+        card.onclick = () => openProductModal(product.id);
         
         const isSale = product.sale_price && product.sale_price < product.price;
         const priceDisplay = isSale 
@@ -916,7 +934,7 @@ function renderCategory(categoryName, elementId) {
             <div class="product-image-container">
                 ${discountBadge}
                 <img src="${product.img}" alt="${product.name}" loading="lazy">
-                <button class="add-to-cart-btn" onclick="openProductModal(${product.id})">
+                <button class="add-to-cart-btn">
                     Quick View
                 </button>
             </div>
