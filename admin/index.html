@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RARE ROOT | Admin</title>
     <!-- Favicon -->
-    <link rel="icon" href="https://files.fm/thumb.php?i=8m4meu6s7y" type="image/jpeg">
+    <link rel="icon" href="https://files.fm/thumb.php?i=y628qspy4s" type="image/jpeg">
     <style>
         :root {
             --bg-wine: #2c1b18;
@@ -91,7 +91,7 @@
         <div class="form-group">
             <label>Personal Access Token (PAT)</label>
             <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
-            <small style="display:block; margin-top:5px; opacity:0.6;">Requires 'repo' scope.</small>
+            <small style="display:block; margin-top:5px; opacity:0.6;">Requires 'repo' scope. <a href="#" onclick="alert('Once you log in, your token is saved securely in your browser.'); return false;" style="color:var(--text-gold)">Is this safe?</a></small>
         </div>
         <button onclick="login()">Access Dashboard</button>
     </div>
@@ -182,11 +182,14 @@
         const saved = localStorage.getItem('rare_root_admin');
         if (saved) {
             config = JSON.parse(saved);
+            // Auto-fill fields (just in case)
             document.getElementById('gh-username').value = config.user;
             document.getElementById('gh-repo').value = config.repo;
             document.getElementById('gh-token').value = config.token;
-            // Auto login if credentials exist
-            // login(); // Optional: force manual click to confirm
+            
+            // Auto Login
+            console.log('Auto-logging in...');
+            login(); 
         }
     };
 
