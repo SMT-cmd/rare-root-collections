@@ -719,16 +719,18 @@ footer {
     font-size: 0.9rem;
 }
     </style>
-    <link rel="icon" href="https://files.fm/thumb.php?i=4wunrd26s5" type="image/jpeg">
+    <!-- Favicon -->
+    <link rel="icon" href="https://files.fm/thumb.php?i=8m4meu6s7y" type="image/jpeg">
     
     <script src="https://js.paystack.co/v1/inline.js"></script>
+    <!-- Removed Netlify Identity Script -->
 </head>
 <body>
 
     <nav>
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
         <a href="#" class="logo">
-            <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" class="nav-logo-img">
+            <img src="https://files.fm/thumb.php?i=8m4meu6s7y" alt="RARE ROOT" class="nav-logo-img">
         </a>
         <div class="nav-actions">
             <div class="search-box">
@@ -786,7 +788,7 @@ footer {
     <footer>
         <div class="footer-content">
             <div class="footer-col brand-col">
-                <img src="https://files.fm/thumb.php?i=4wunrd26s5" alt="RARE ROOT" class="footer-logo">
+                <img src="https://files.fm/thumb.php?i=8m4meu6s7y" alt="RARE ROOT" class="footer-logo">
                 <p>Prestige in every thread.</p>
             </div>
             <div class="footer-col">
@@ -859,7 +861,7 @@ footer {
         </div>
     </div>
 
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Script removed for GitHub Pages compatibility -->
     <script>
 // ------------------------------------------------
 // 1. DATABASE & STATE
@@ -871,7 +873,7 @@ let currentModalProduct = null;
 // Fetch Products from JSON (Simulating Database)
 async function fetchProducts() {
     try {
-        const response = await fetch('data/products.json');
+        const response = await fetch('data/products.json?t=' + new Date().getTime());
         const data = await response.json();
         products = data.products || [];
         initializeShop();
@@ -1236,15 +1238,8 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
     
     // Initialize Netlify Identity if present
-    if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-            if (!user) {
-                window.netlifyIdentity.on("login", () => {
-                    document.location.href = "/admin/";
-                });
-            }
-        });
-    }
+    // (Disabled for GitHub Pages compatibility)
+    // if (window.netlifyIdentity) { ... }
 });
     </script>
 </body>
