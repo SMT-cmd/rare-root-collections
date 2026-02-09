@@ -143,19 +143,32 @@
             </div>
 
             <div class="form-group">
-                <label>Image URL</label>
-                <input type="url" id="p-img" placeholder="https://files.fm/..." required>
-                <small><a href="https://files.fm/" target="_blank" style="color:var(--text-gold);">Upload to Files.fm</a></small>
+                <label>Product Type (for search filtering)</label>
+                <input type="text" id="p-type" list="type-options" placeholder="Sweatshirt, Set, Pant...">
+                <datalist id="type-options">
+                    <option value="Sweatshirt">
+                    <option value="T-Shirt">
+                    <option value="Set">
+                    <option value="Pant">
+                    <option value="Shorts">
+                    <option value="Hoodie">
+                    <option value="Jacket">
+                </datalist>
+            </div>
+
+            <!-- Variants Section (Replaces simple Image/Color inputs) -->
+            <div class="form-group" style="background: rgba(0,0,0,0.2); padding: 15px; border: 1px solid #555;">
+                <label>Product Variants (Color + Image)</label>
+                <div id="variants-container">
+                    <!-- Dynamic rows go here -->
+                </div>
+                <button type="button" onclick="addVariant()" style="margin-top:10px; font-size:0.8em;">+ Add Color Variant</button>
+                <small style="display:block; margin-top:5px; opacity:0.6;">Upload images to <a href="https://files.fm/" target="_blank" style="color:var(--text-gold);">Files.fm</a> first.</small>
             </div>
 
             <div class="form-group">
                 <label>Sizes (comma separated)</label>
                 <input type="text" id="p-sizes" placeholder="S, M, L, XL">
-            </div>
-
-            <div class="form-group">
-                <label>Colors (comma separated)</label>
-                <input type="text" id="p-colors" placeholder="Black, White, Navy">
             </div>
 
             <div class="form-group">
@@ -327,12 +340,31 @@
     function openModal() {
         document.getElementById('product-form').reset();
         document.getElementById('p-id').value = '';
+        document.getElementById('variants-container').innerHTML = '';
+        addVariant(); // Add one empty row by default
         document.getElementById('modal-title').innerText = 'Add New Product';
         document.getElementById('product-modal').style.display = 'flex';
     }
 
     function closeModal() {
         document.getElementById('product-modal').style.display = 'none';
+    }
+
+    function addVariant(color = '', img = '') {
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.gap = '10px';
+        div.style.marginBottom = '10px';
+        div.innerHTML = `
+            <div style="flex:1;">
+                <input type="text" class="v-color" placeholder="Color Name (e.g. Black)" value="${color}" required>
+            </div>
+            <div style="flex:2;">
+                <input type="url" class="v-img" placeholder="Image URL" value="${img}" required>
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" style="background:#800; padding:0 10px;">X</button>
+        `;
+        document.getElementById('variants-container').appendChild(div);
     }
 
     function editProduct(id) {
@@ -343,11 +375,32 @@
         document.getElementById('p-name').value = p.name;
         document.getElementById('p-price').value = p.price;
         document.getElementById('p-sale').value = p.sale_price || '';
-        document.getElementById('p-category').value = p.category; // Ensure values match options
-        document.getElementById('p-img').value = p.img;
+        document.getElementById('p-category').value = p.category;
+        document.getElementById('p-type').value = p.type || ''; // New field
         document.getElementById('p-sizes').value = p.sizes ? p.sizes.join(', ') : '';
-        document.getElementById('p-colors').value = p.colors ? p.colors.map(c => c.color).join(', ') : '';
         document.getElementById('p-hidden').checked = !!p.hidden;
+
+        // Populate Variants
+        const container = document.getElementById('variants-container');
+        container.innerHTML = '';
+        
+        if (p.variants && p.variants.length > 0) {
+            p.variants.forEach(v => addVariant(v.color, v.image));
+        } else {
+            // Backward compatibility: Create variants from legacy img + colors
+            // If colors exist, create a variant for each, using the same main image (or just the first one)
+            // Or just create one variant with the main image and first color
+            if (p.colors && p.colors.length > 0) {
+                p.colors.forEach((c, idx) => {
+                    // Use the main image for all, or try to find a better way?
+                    // For now, use main image for all
+                    addVariant(c.color, p.img);
+                });
+            } else {
+                // No colors? Just one variant with main image
+                addVariant('Standard', p.img);
+            }
+        }
 
         document.getElementById('modal-title').innerText = 'Edit Product';
         document.getElementById('product-modal').style.display = 'flex';
@@ -367,15 +420,37 @@
         const idStr = document.getElementById('p-id').value;
         const isNew = !idStr;
         
+        // Gather Variants
+        const variantRows = document.querySelectorAll('#variants-container > div');
+        const variants = [];
+        variantRows.forEach(row => {
+            const color = row.querySelector('.v-color').value.trim();
+            const img = row.querySelector('.v-img').value.trim();
+            if (color && img) {
+                variants.push({ color, image: img });
+            }
+        });
+
+        if (variants.length === 0) {
+            alert('Please add at least one variant (Color + Image).');
+            return;
+        }
+
         const newProduct = {
-            id: isNew ? Date.now() : parseInt(idStr), // Simple ID gen
+            id: isNew ? Date.now() : parseInt(idStr),
             name: document.getElementById('p-name').value,
             price: parseInt(document.getElementById('p-price').value),
             sale_price: document.getElementById('p-sale').value ? parseInt(document.getElementById('p-sale').value) : null,
             category: document.getElementById('p-category').value,
-            img: document.getElementById('p-img').value,
+            type: document.getElementById('p-type').value, // New field
+            
+            // Backward compatibility fields (derived from variants)
+            img: variants[0].image, 
+            colors: variants.map(v => ({ color: v.color })),
+            
+            variants: variants, // New rich data
+            
             sizes: document.getElementById('p-sizes').value.split(',').map(s => s.trim()).filter(s => s),
-            colors: document.getElementById('p-colors').value.split(',').map(c => ({color: c.trim()})).filter(c => c.color),
             hidden: document.getElementById('p-hidden').checked
         };
 
