@@ -1,0 +1,54 @@
+{
+  "products": [
+    {
+      "id": 101,
+      "name": "The Bull Pump Cover",
+      "price": 18000,
+      "category": "Gym Wear for Traders",
+      "img": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=600&q=80",
+      "sizes": ["M", "L", "XL"],
+      "colors": [{ "color": "Black" }, { "color": "Navy" }],
+      "hidden": false
+    },
+    {
+      "id": 102,
+      "name": "Market Close Tank",
+      "price": 12000,
+      "category": "Gym Wear for Traders",
+      "img": "https://images.unsplash.com/photo-1503341455253-b2e72333dbdb?auto=format&fit=crop&w=600&q=80",
+      "sizes": ["S", "M", "L"],
+      "colors": [{ "color": "White" }, { "color": "Grey" }],
+      "hidden": false
+    },
+    {
+      "id": 201,
+      "name": "Vintage 2026 Hoodie",
+      "price": 25000,
+      "category": "Street Wear",
+      "img": "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80",
+      "sizes": ["L", "XL", "XXL"],
+      "colors": [{ "color": "Vintage Black" }],
+      "hidden": false
+    },
+    {
+      "id": 202,
+      "name": "Oversized 'Root' Tee",
+      "price": 15000,
+      "category": "Street Wear",
+      "img": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80",
+      "sizes": ["M", "L", "XL"],
+      "colors": [{ "color": "Sand" }, { "color": "Olive" }],
+      "hidden": false
+    },
+    {
+      "id": 301,
+      "name": "Executive Lounge Set",
+      "price": 30000,
+      "category": "Brand Casuals",
+      "img": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80",
+      "sizes": ["M", "L", "XL"],
+      "colors": [{ "color": "Beige" }],
+      "hidden": false
+    }
+  ]
+}
