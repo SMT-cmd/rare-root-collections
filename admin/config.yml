@@ -8,14 +8,24 @@ media_folder: "assets/uploads"
 public_folder: "/assets/uploads" 
 
 collections:
-  - name: "products"
-    label: "Inventory"
-    folder: "_products"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - {label: "Product Name", name: "title", widget: "string"}
-      - {label: "Collection", name: "category", widget: "select", options: ["THE EXCHANGE", "KINETIC", "URBAN ARCHIVE", "HERITAGE"]}
-      - {label: "Price (NGN)", name: "price", widget: "number"}
-      - {label: "Product Image", name: "image", widget: "image"}
-      - {label: "Description", name: "body", widget: "markdown"}
+  - name: "settings"
+    label: "Settings"
+    files:
+      - name: "inventory"
+        label: "Product Inventory"
+        file: "data/products.json"
+        description: "Manage all products here"
+        fields:
+          - label: "Products"
+            name: "products"
+            widget: "list"
+            fields:
+              - {label: "ID", name: "id", widget: "number", value_type: "int"}
+              - {label: "Name", name: "name", widget: "string"}
+              - {label: "Category", name: "category", widget: "select", options: ["Gym Wear for Traders", "Street Wear", "Brand Casuals", "Accessories", "The Exchange", "Kinetic", "Urban Archive"]}
+              - {label: "Price (NGN)", name: "price", widget: "number"}
+              - {label: "Sale Price (NGN)", name: "sale_price", widget: "number", required: false, hint: "Leave empty if not on sale"}
+              - {label: "Product Image", name: "img", widget: "image"}
+              - {label: "Sizes", name: "sizes", widget: "select", multiple: true, options: ["S", "M", "L", "XL", "XXL"]}
+              - {label: "Colors", name: "colors", widget: "list", field: {label: "Color Name", name: "color", widget: "string"}}
+              - {label: "Hidden", name: "hidden", widget: "boolean", default: false}
