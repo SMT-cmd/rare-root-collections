@@ -1,6 +1,6 @@
 backend:
   name: git-gateway
-  branch: main
+  branch: rare-root.netlify.app
 
 media_folder: "assets/images"
 public_folder: "/assets/images"
