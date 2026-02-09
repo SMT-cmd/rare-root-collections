@@ -1,3 +1,12 @@
+backend:
+  name: git-gateway
+  branch: main # or master, check your GitHub branch name
+
+# This is where your images will be stored in your GitHub repo
+media_folder: "assets/uploads" 
+# This is how the website finds the images
+public_folder: "/assets/uploads" 
+
 collections:
   - name: "products"
     label: "Inventory"
@@ -6,7 +15,7 @@ collections:
     slug: "{{slug}}"
     fields:
       - {label: "Product Name", name: "title", widget: "string"}
-      - {label: "Collection", name: "category", widget: "select", options: ["KINETIC", "THE EXCHANGE", "URBAN ARCHIVE", "HERITAGE"]}
+      - {label: "Collection", name: "category", widget: "select", options: ["THE EXCHANGE", "KINETIC", "URBAN ARCHIVE", "HERITAGE"]}
       - {label: "Price (NGN)", name: "price", widget: "number"}
-      - {label: "Main Image URL", name: "image", widget: "string"}
+      - {label: "Product Image", name: "image", widget: "image"}
       - {label: "Description", name: "body", widget: "markdown"}
