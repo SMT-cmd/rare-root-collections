@@ -1,25 +1,392 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RARE ROOT Admin</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RARE ROOT | Admin</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://files.fm/thumb.php?i=8m4meu6s7y" type="image/jpeg">
+    <style>
+        :root {
+            --bg-wine: #2c1b18;
+            --bg-cotton: #3e2723;
+            --text-gold: #e0c097;
+            --text-cream: #f4f1ea;
+            --glass: rgba(62, 39, 35, 0.95);
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-wine);
+            color: var(--text-cream);
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2, h3 { color: var(--text-gold); text-transform: uppercase; letter-spacing: 2px; }
+        
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        /* Auth Form */
+        #auth-section { max-width: 500px; margin: 50px auto; padding: 30px; background: var(--glass); border: 1px solid var(--text-gold); }
+        input, select, textarea {
+            width: 100%; padding: 10px; margin: 10px 0;
+            background: rgba(0,0,0,0.3); border: 1px solid #555; color: white;
+            box-sizing: border-box;
+        }
+        button {
+            background: var(--text-gold); color: var(--bg-wine); border: none;
+            padding: 10px 20px; cursor: pointer; font-weight: bold; text-transform: uppercase;
+        }
+        button:hover { background: #fff; }
+        
+        /* Dashboard */
+        #dashboard { display: none; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--text-gold); padding-bottom: 20px; margin-bottom: 20px; }
+        
+        .product-list { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        .product-card {
+            background: var(--bg-cotton); border: 1px solid #555; padding: 15px; position: relative;
+        }
+        .product-card img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #555; margin-bottom: 10px; }
+        .product-card h3 { margin: 5px 0; font-size: 1.1em; }
+        .product-card .actions { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-edit { background: #444; color: white; }
+        .btn-delete { background: #800000; color: white; }
+        
+        /* Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: var(--bg-wine); border: 1px solid var(--text-gold);
+            padding: 30px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+        }
+        .close { float: right; font-size: 24px; cursor: pointer; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: var(--text-gold); }
+        
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--text-gold); color: var(--bg-wine);
+            padding: 15px 25px; display: none; z-index: 2000;
+        }
+    </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  
-  <script>
-    // 3. This script forces the redirect back to the admin panel after login
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
+
+<div class="container">
+    <div id="auth-section">
+        <h2>Admin Access</h2>
+        <p style="font-size: 0.9em; opacity: 0.8;">Enter your GitHub details to manage products.</p>
+        <div class="form-group">
+            <label>GitHub Username</label>
+            <input type="text" id="gh-username" placeholder="e.g. yourname">
+        </div>
+        <div class="form-group">
+            <label>Repository Name</label>
+            <input type="text" id="gh-repo" placeholder="e.g. RARE-ROOT">
+        </div>
+        <div class="form-group">
+            <label>Personal Access Token (PAT)</label>
+            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+            <small style="display:block; margin-top:5px; opacity:0.6;">Requires 'repo' scope.</small>
+        </div>
+        <button onclick="login()">Access Dashboard</button>
+    </div>
+
+    <div id="dashboard">
+        <div class="header-row">
+            <h2>Product Management</h2>
+            <div>
+                <button onclick="openModal()">+ Add Product</button>
+                <button onclick="logout()" style="background:#444; color:white; margin-left:10px;">Logout</button>
+            </div>
+        </div>
+        <div id="loading" style="text-align:center; display:none;">Loading products from GitHub...</div>
+        <div id="product-list" class="product-list"></div>
+    </div>
+</div>
+
+<!-- Edit/Add Modal -->
+<div id="product-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3 id="modal-title">Edit Product</h3>
+        <form id="product-form" onsubmit="saveProduct(event)">
+            <input type="hidden" id="p-id">
+            
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="p-name" required>
+            </div>
+            
+            <div class="form-group" style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                    <label>Price (₦)</label>
+                    <input type="number" id="p-price" required>
+                </div>
+                <div style="flex:1;">
+                    <label>Sale Price (Optional)</label>
+                    <input type="number" id="p-sale">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select id="p-category">
+                    <option value="The Exchange">The Exchange (Gym/Trader)</option>
+                    <option value="Kinetic">Kinetic (Street Performance)</option>
+                    <option value="Urban Archive">Urban Archive (Casual)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Image URL</label>
+                <input type="url" id="p-img" placeholder="https://files.fm/..." required>
+                <small><a href="https://files.fm/" target="_blank" style="color:var(--text-gold);">Upload to Files.fm</a></small>
+            </div>
+
+            <div class="form-group">
+                <label>Sizes (comma separated)</label>
+                <input type="text" id="p-sizes" placeholder="S, M, L, XL">
+            </div>
+
+            <div class="form-group">
+                <label>Colors (comma separated)</label>
+                <input type="text" id="p-colors" placeholder="Black, White, Navy">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="p-hidden" style="width:auto;"> Hide Product
+                </label>
+            </div>
+
+            <button type="submit" id="save-btn">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div id="toast">Saved successfully!</div>
+
+<script>
+    // State
+    let config = { user: '', repo: '', token: '', branch: 'main' };
+    let productsData = { products: [] };
+    let sha = ''; // File SHA for GitHub updates
+
+    // Init
+    window.onload = () => {
+        const saved = localStorage.getItem('rare_root_admin');
+        if (saved) {
+            config = JSON.parse(saved);
+            document.getElementById('gh-username').value = config.user;
+            document.getElementById('gh-repo').value = config.repo;
+            document.getElementById('gh-token').value = config.token;
+            // Auto login if credentials exist
+            // login(); // Optional: force manual click to confirm
         }
-      });
+    };
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 3000);
     }
-  </script>
+
+    async function login() {
+        const user = document.getElementById('gh-username').value;
+        const repo = document.getElementById('gh-repo').value;
+        const token = document.getElementById('gh-token').value;
+
+        if (!user || !repo || !token) {
+            alert('Please fill all fields');
+            return;
+        }
+
+        config = { user, repo, token, branch: 'main' };
+        localStorage.setItem('rare_root_admin', JSON.stringify(config));
+        
+        document.getElementById('auth-section').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        
+        await fetchProducts();
+    }
+
+    function logout() {
+        localStorage.removeItem('rare_root_admin');
+        location.reload();
+    }
+
+    // GitHub API Helper
+    async function ghFetch(path, options = {}) {
+        const url = `https://api.github.com/repos/${config.user}/${config.repo}/contents/${path}`;
+        const headers = {
+            'Authorization': `token ${config.token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+            ...options.headers
+        };
+        
+        const res = await fetch(url, { ...options, headers });
+        if (!res.ok) throw new Error(`GitHub API Error: ${res.statusText}`);
+        return res.json();
+    }
+
+    async function fetchProducts() {
+        const loader = document.getElementById('loading');
+        loader.style.display = 'block';
+        try {
+            const data = await ghFetch('data/products.json?ref=' + config.branch);
+            sha = data.sha; // Important for updates
+            // Decode Base64 content (handle potential newlines)
+            const content = new TextDecoder().decode(Uint8Array.from(atob(data.content.replace(/\n/g, '')), c => c.charCodeAt(0)));
+            productsData = JSON.parse(content);
+            renderProducts();
+        } catch (e) {
+            console.error(e);
+            alert('Failed to load products. Check credentials and repository name.');
+            document.getElementById('auth-section').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+        } finally {
+            loader.style.display = 'none';
+        }
+    }
+
+    function renderProducts() {
+        const list = document.getElementById('product-list');
+        list.innerHTML = '';
+        
+        // Reverse to show newest first if they have sequential IDs, or just map
+        [...productsData.products].reverse().forEach(p => {
+            const div = document.createElement('div');
+            div.className = 'product-card';
+            div.innerHTML = `
+                <img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                <h3>${p.name}</h3>
+                <p>${p.hidden ? '<span style="color:red">[HIDDEN]</span> ' : ''}₦${p.price.toLocaleString()}</p>
+                <div class="actions">
+                    <button class="btn-edit" onclick="editProduct(${p.id})">Edit</button>
+                    <button class="btn-delete" onclick="deleteProduct(${p.id})">Delete</button>
+                </div>
+            `;
+            list.appendChild(div);
+        });
+    }
+
+    async function saveToGitHub() {
+        const btn = document.getElementById('save-btn');
+        const originalText = btn ? btn.innerText : '';
+        if(btn) btn.innerText = 'Pushing to GitHub...';
+
+        try {
+            // Encode content
+            const content = JSON.stringify(productsData, null, 2);
+            // Simple Base64 encode (ASCII only) - using btoa for simplicity, 
+            // for full UTF-8 support we might need more but products usually simple text.
+            // Better UTF-8 encode:
+            const base64Content = btoa(unescape(encodeURIComponent(content)));
+
+            const body = {
+                message: "Update products via Admin Panel",
+                content: base64Content,
+                sha: sha,
+                branch: config.branch
+            };
+
+            const url = `https://api.github.com/repos/${config.user}/${config.repo}/contents/data/products.json`;
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${config.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!res.ok) throw new Error(await res.text());
+            
+            const data = await res.json();
+            sha = data.content.sha; // Update SHA for next commit
+            showToast('Changes saved to GitHub!');
+            closeModal();
+        } catch (e) {
+            alert('Error saving to GitHub: ' + e.message);
+        } finally {
+            if(btn) btn.innerText = originalText;
+        }
+    }
+
+    // CRUD
+    function openModal() {
+        document.getElementById('product-form').reset();
+        document.getElementById('p-id').value = '';
+        document.getElementById('modal-title').innerText = 'Add New Product';
+        document.getElementById('product-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('product-modal').style.display = 'none';
+    }
+
+    function editProduct(id) {
+        const p = productsData.products.find(x => x.id === id);
+        if (!p) return;
+
+        document.getElementById('p-id').value = p.id;
+        document.getElementById('p-name').value = p.name;
+        document.getElementById('p-price').value = p.price;
+        document.getElementById('p-sale').value = p.sale_price || '';
+        document.getElementById('p-category').value = p.category; // Ensure values match options
+        document.getElementById('p-img').value = p.img;
+        document.getElementById('p-sizes').value = p.sizes ? p.sizes.join(', ') : '';
+        document.getElementById('p-colors').value = p.colors ? p.colors.map(c => c.color).join(', ') : '';
+        document.getElementById('p-hidden').checked = !!p.hidden;
+
+        document.getElementById('modal-title').innerText = 'Edit Product';
+        document.getElementById('product-modal').style.display = 'flex';
+    }
+
+    async function deleteProduct(id) {
+        if (!confirm('Are you sure you want to delete this product?')) return;
+        
+        productsData.products = productsData.products.filter(p => p.id !== id);
+        renderProducts();
+        await saveToGitHub();
+    }
+
+    async function saveProduct(e) {
+        e.preventDefault();
+        
+        const idStr = document.getElementById('p-id').value;
+        const isNew = !idStr;
+        
+        const newProduct = {
+            id: isNew ? Date.now() : parseInt(idStr), // Simple ID gen
+            name: document.getElementById('p-name').value,
+            price: parseInt(document.getElementById('p-price').value),
+            sale_price: document.getElementById('p-sale').value ? parseInt(document.getElementById('p-sale').value) : null,
+            category: document.getElementById('p-category').value,
+            img: document.getElementById('p-img').value,
+            sizes: document.getElementById('p-sizes').value.split(',').map(s => s.trim()).filter(s => s),
+            colors: document.getElementById('p-colors').value.split(',').map(c => ({color: c.trim()})).filter(c => c.color),
+            hidden: document.getElementById('p-hidden').checked
+        };
+
+        if (isNew) {
+            productsData.products.push(newProduct);
+        } else {
+            const idx = productsData.products.findIndex(p => p.id === parseInt(idStr));
+            if (idx !== -1) productsData.products[idx] = newProduct;
+        }
+
+        renderProducts();
+        await saveToGitHub();
+    }
+</script>
+
 </body>
 </html>
