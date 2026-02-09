@@ -2,30 +2,18 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "assets/images" # We won't really use this, but it's required
+media_folder: "assets/images"
 public_folder: "/assets/images"
 
 collections:
   - name: "products"
-    label: "Products"
+    label: "Catalog"
     folder: "_products"
     create: true
     slug: "{{slug}}"
     fields:
       - {label: "Product Name", name: "title", widget: "string"}
-      - {label: "Category", name: "category", widget: "select", options: ["Sweatshirts", "T-Shirts", "Trousers", "Accessories"]}
+      - {label: "Category", name: "category", widget: "select", options: ["Gym Wear for Traders", "Street Wear", "Brand Casuals"]}
       - {label: "Price (NGN)", name: "price", widget: "number"}
-      - {label: "Original Price (Slash)", name: "old_price", widget: "number", required: false}
+      - {label: "Main Image URL", name: "image", widget: "string", hint: "Paste your GitHub Issue link here"}
       - {label: "Description", name: "body", widget: "markdown"}
-      - {label: "Shopify Link (Global)", name: "shopify_url", widget: "string", required: false, hint: "Paste your Shopify product link here for international buyers."}
-      
-      # The 5 "GitHub Issue" Image Slots
-      - {label: "Main Image URL", name: "image_1", widget: "string", hint: "Paste the GitHub Issue link here."}
-      - {label: "Back View URL", name: "image_2", widget: "string", required: false}
-      - {label: "Detail Shot URL", name: "image_3", widget: "string", required: false}
-      - {label: "Lifestyle Shot URL", name: "image_4", widget: "string", required: false}
-      - {label: "Color Variant URL", name: "image_5", widget: "string", required: false}
-      
-      # Sizes and Colors
-      - {label: "Available Sizes", name: "sizes", widget: "select", multiple: true, options: ["S", "M", "L", "XL", "XXL"]}
-      - {label: "Available Colors", name: "colors", widget: "list", field: {label: "Color Hex", name: "hex", widget: "string"}}
