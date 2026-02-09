@@ -1,19 +1,12 @@
-backend:
-  name: git-gateway
-  branch: main
-
-media_folder: "assets/images"
-public_folder: "/assets/images"
-
 collections:
   - name: "products"
-    label: "Catalog"
+    label: "Inventory"
     folder: "_products"
     create: true
     slug: "{{slug}}"
     fields:
       - {label: "Product Name", name: "title", widget: "string"}
-      - {label: "Category", name: "category", widget: "select", options: ["Gym Wear for Traders", "Street Wear", "Brand Casuals"]}
+      - {label: "Collection", name: "category", widget: "select", options: ["KINETIC", "THE EXCHANGE", "URBAN ARCHIVE", "HERITAGE"]}
       - {label: "Price (NGN)", name: "price", widget: "number"}
-      - {label: "Main Image URL", name: "image", widget: "string", hint: "Paste your GitHub Issue link here"}
+      - {label: "Main Image URL", name: "image", widget: "string"}
       - {label: "Description", name: "body", widget: "markdown"}
