@@ -1,34 +1,459 @@
----
-layout: default
-title: Home
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RARE ROOT | Prestige</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://js.paystack.co/v1/inline.js"></script>
 
-<div class="product-grid">
-  {% for product in site.products %}
-    <div class="product-card">
-        <img src="{{ product.image_1 }}" alt="{{ product.title }}" class="product-image">
+    <style>
+        /* -------------------------------------------------------
+           THEME: WINE & BROWN COTTON TEXTURE
+           ------------------------------------------------------- */
+        :root {
+            --bg-wine: #2c1b18; /* Deep Earthy Wine */
+            --bg-cotton: #3e2723; /* Brown Cotton Undertone */
+            --text-gold: #e0c097; /* Muted Gold for Prestige */
+            --text-cream: #f4f1ea; /* Soft White */
+            --accent-red: #8a2be2; /* Subtle Royal Touch */
+            --glass: rgba(62, 39, 35, 0.85);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-wine);
+            color: var(--text-cream);
+            overflow-x: hidden;
+            
+            /* The Cotton Texture Effect */
+            background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23000000' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* -------------------------------------------------------
+           ANIMATIONS
+           ------------------------------------------------------- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+        /* -------------------------------------------------------
+           HEADER & MENU
+           ------------------------------------------------------- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(44, 27, 24, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(224, 192, 151, 0.1);
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: var(--text-gold);
+            text-transform: uppercase;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-cream);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .menu-btn:hover { transform: scale(1.1); color: var(--text-gold); }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--text-gold);
+            color: var(--bg-wine);
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        /* -------------------------------------------------------
+           HERO SECTION
+           ------------------------------------------------------- */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: var(--text-gold);
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* -------------------------------------------------------
+           CATALOGUE
+           ------------------------------------------------------- */
+        .category-title {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            color: var(--text-gold);
+            margin: 60px 0 30px 0;
+            font-size: 1.5rem;
+            border-bottom: 1px solid rgba(224, 192, 151, 0.2);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(224, 192, 151, 0.1);
+            padding: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--text-gold);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .p-img-box {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .p-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(20%) contrast(90%); /* Vintage Film Look */
+        }
+
+        .p-info {
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .p-name {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 5px 0;
+        }
+
+        .p-price {
+            font-family: 'Cinzel', serif;
+            color: var(--text-gold);
+            font-size: 1.2rem;
+        }
+
+        .btn-add {
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--text-cream);
+            color: var(--text-cream);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-add:hover {
+            background: var(--text-gold);
+            color: var(--bg-wine);
+            border-color: var(--text-gold);
+        }
+
+        /* -------------------------------------------------------
+           CART SLIDE-OUT (The Drawer)
+           ------------------------------------------------------- */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100%;
+            background: #251614; /* Darker wine */
+            box-shadow: -5px 0 30px rgba(0,0,0,0.5);
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 1000;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--text-gold);
+        }
+
+        .cart-drawer.open { transform: translateX(0); }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cart-title { font-family: 'Cinzel', serif; color: var(--text-gold); font-size: 1.5rem; }
+        .close-cart { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        .cart-items { flex-grow: 1; overflow-y: auto; }
         
-        <div class="product-info">
-            <div class="category-tag">{{ product.category }}</div>
-            <h3 class="product-title">{{ product.title }}</h3>
-            
-            <div class="price">
-                {% if product.old_price %}
-                <span class="slash">₦{{ product.old_price }}</span>
-                {% endif %}
-                ₦{{ product.price }}
-            </div>
-            
-            <button class="btn btn-buy" onclick="initiateBuy({{ product.price }}, '{{ product.title }}')">
-                BUY NOW (NGN)
-            </button>
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 10px;
+        }
 
-            {% if product.shopify_url %}
-            <a href="{{ product.shopify_url }}" target="_blank" class="btn btn-global">
-                GLOBAL BUY (USD)
-            </a>
-            {% endif %}
+        .cart-footer { padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+        
+        .total-price {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--text-gold);
+            margin-bottom: 20px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 15px;
+            background: var(--text-gold);
+            color: var(--bg-wine);
+            border: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* MOBILE OVERLAY */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 900;
+            display: none;
+        }
+        .overlay.active { display: block; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <button class="menu-btn">☰</button>
+        <a href="#" class="logo">RARE ROOT</a>
+        <div class="cart-icon" onclick="toggleCart()">
+            CART <span id="cart-count" class="cart-count">0</span>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <p>The 2026 Collection</p>
+        <h2>Stay Grounded. Stay Rare.</h2>
+    </div>
+
+    <div class="container">
+        
+        <div style="text-align: center;"><div class="category-title">Gym Wear for Traders</div></div>
+        <div class="grid" id="gym-grid">
+            </div>
+
+        <div style="text-align: center;"><div class="category-title">Street Wear</div></div>
+        <div class="grid" id="street-grid"></div>
+
+        <div style="text-align: center;"><div class="category-title">Brand Casuals</div></div>
+        <div class="grid" id="casual-grid"></div>
+
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <span class="cart-title">Your Bag</span>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <p style="text-align:center; color:#888; margin-top:20px;">Your bag is empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="total-price">
+                <span>Total</span>
+                <span id="cart-total">₦0</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Checkout Now</button>
         </div>
     </div>
-  {% endfor %}
-</div>
+
+    <script>
+        // ------------------------------------------------
+        // 1. DATABASE (Simulating Admin Content)
+        // ------------------------------------------------
+        const products = [
+            { id: 101, name: "The Bull Pump Cover", price: 18000, category: "Gym Wear for Traders", img: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=600&q=80" },
+            { id: 102, name: "Market Close Tank", price: 12000, category: "Gym Wear for Traders", img: "https://images.unsplash.com/photo-1503341455253-b2e72333dbdb?auto=format&fit=crop&w=600&q=80" },
+            { id: 201, name: "Vintage 2026 Hoodie", price: 25000, category: "Street Wear", img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80" },
+            { id: 202, name: "Oversized 'Root' Tee", price: 15000, category: "Street Wear", img: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80" },
+            { id: 301, name: "Executive Lounge Set", price: 30000, category: "Brand Casuals", img: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        // ------------------------------------------------
+        // 2. CART SYSTEM
+        // ------------------------------------------------
+        let cart = [];
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCartUI();
+            toggleCart(); // Open cart to show user
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+
+            // Update Count
+            cartCount.innerText = cart.length;
+
+            // Update Items
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="text-align:center; color:#888; margin-top:20px;">Your bag is empty.</p>';
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item';
+                    itemDiv.innerHTML = `
+                        <div>
+                            <div style="color:white;">${item.name}</div>
+                            <div style="font-size:0.8rem; color:#888;">${item.category}</div>
+                        </div>
+                        <div>₦${item.price.toLocaleString()}</div>
+                    `;
+                    cartItemsContainer.appendChild(itemDiv);
+                });
+            }
+
+            // Update Total
+            cartTotal.innerText = '₦' + total.toLocaleString();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-drawer').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        // ------------------------------------------------
+        // 3. RENDER PRODUCTS
+        // ------------------------------------------------
+        function renderCategory(categoryName, elementId) {
+            const container = document.getElementById(elementId);
+            const items = products.filter(p => p.category === categoryName);
+            
+            items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="p-img-box">
+                        <img src="${product.img}" alt="${product.name}" class="p-img">
+                    </div>
+                    <div class="p-info">
+                        <h3 class="p-name">${product.name}</h3>
+                        <div class="p-price">₦${product.price.toLocaleString()}</div>
+                        <button class="btn-add" onclick="addToCart(${product.id})">Add to Bag</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        renderCategory("Gym Wear for Traders", "gym-grid");
+        renderCategory("Street Wear", "street-grid");
+        renderCategory("Brand Casuals", "casual-grid");
+
+        // ------------------------------------------------
+        // 4. CHECKOUT (PAYSTACK)
+        // ------------------------------------------------
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your bag is empty.");
+                return;
+            }
+
+            let totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+            let email = prompt("Enter your email for the receipt:");
+            
+            if (email) {
+                let handler = PaystackPop.setup({
+                    key: 'YOUR_PUBLIC_KEY_HERE', 
+                    email: email,
+                    amount: totalAmount * 100,
+                    currency: "NGN",
+                    callback: function(response) {
+                        alert('Order Confirmed! Ref: ' + response.reference);
+                        cart = []; // Clear cart
+                        updateCartUI();
+                        toggleCart();
+                    }
+                });
+                handler.openIframe();
+            }
+        }
+    </script>
+</body>
+</html>
