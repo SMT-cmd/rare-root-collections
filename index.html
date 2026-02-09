@@ -622,6 +622,31 @@ footer {
     box-shadow: 0 10px 50px rgba(0,0,0,0.7);
 }
 
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #555;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+    position: relative;
+    transition: transform 0.2s;
+}
+.color-swatch:hover { transform: scale(1.1); }
+.color-swatch.selected {
+    border-color: var(--text-gold);
+    box-shadow: 0 0 8px var(--text-gold);
+    transform: scale(1.1);
+}
+.color-swatch-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
 .close-modal {
     color: var(--text-gold);
     float: right;
@@ -792,10 +817,10 @@ footer {
     </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="footer-content">
             <div class="footer-col brand-col">
-                <img src="https://files.fm/thumb.php?i=4wunrd26s5" alt="RARE ROOT" class="footer-logo">
+                <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" class="footer-logo">
                 <p>Prestige in every thread.</p>
             </div>
             <div class="footer-col">
@@ -806,19 +831,21 @@ footer {
             </div>
             <div class="footer-col">
                 <h4>Support</h4>
-                <a href="#">Contact Us</a>
                 <a href="#">Shipping & Returns</a>
                 <a href="#">Size Guide</a>
+                <a href="#">Contact Us</a>
+                <a href="admin/index.html" style="opacity: 0.5; font-size: 0.8rem;">Admin Access</a>
             </div>
             <div class="footer-col">
-                <h4>Connect</h4>
-                <a href="#">Instagram</a>
-                <a href="#">Twitter</a>
-                <a href="#">Email</a>
+                <h4>Stay Connected</h4>
+                <div class="social-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 RARE ROOT. All Rights Reserved.</p>
+            <p>&copy; 2026 RARE ROOT. All rights reserved.</p>
         </div>
     </footer>
 
