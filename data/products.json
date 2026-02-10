@@ -124,6 +124,49 @@
         "XL"
       ],
       "hidden": false
+    },
+    {
+      "id": 1770739476197,
+      "name": "PUSH BEYOND LIMIT",
+      "price": 18000,
+      "sale_price": 25000,
+      "category": "Kinetic",
+      "type": "T-Shirt",
+      "img": "https://files.fm/thumb_show.php?i=squ48nktcq",
+      "colors": [
+        {
+          "color": "BLACK"
+        },
+        {
+          "color": "RED"
+        },
+        {
+          "color": "GREY"
+        },
+        {
+          "color": "ASH"
+        }
+      ],
+      "variants": [
+        {
+          "color": "BLACK",
+          "image": "https://files.fm/thumb_show.php?i=squ48nktcq"
+        },
+        {
+          "color": "RED",
+          "image": "https://files.fm/thumb_show.php?i=eebhana6pj"
+        },
+        {
+          "color": "GREY",
+          "image": "https://files.fm/thumb_show.php?i=545gt84c63"
+        },
+        {
+          "color": "ASH",
+          "image": "https://files.fm/thumb_show.php?i=2teb2qptt7"
+        }
+      ],
+      "sizes": [],
+      "hidden": false
     }
   ]
 }
