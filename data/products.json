@@ -7,7 +7,7 @@
       "sale_price": 25000,
       "category": "Urban Archive",
       "type": "T-Shirt",
-      "img": "https://files.fm/f/59mby3mx5t",
+      "img": "https://files.fm/thumb_show.php?i=59mby3mx5t",
       "colors": [
         {
           "color": "Black"
@@ -16,7 +16,7 @@
       "variants": [
         {
           "color": "Black",
-          "image": "https://files.fm/f/59mby3mx5t"
+          "image": "https://files.fm/thumb_show.php?i=59mby3mx5t"
         }
       ],
       "sizes": [
