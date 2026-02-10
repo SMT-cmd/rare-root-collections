@@ -3,111 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RARE ROOT | Admin</title>
+    <title>RARE ROOT | Command Center</title>
     <!-- Favicon -->
     <link rel="icon" href="https://files.fm/thumb.php?i=y628qspy4s" type="image/jpeg">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
+            --bg-dark: #1a0f0d;
             --bg-wine: #2c1b18;
-            --bg-cotton: #3e2723;
+            --bg-card: #251614;
             --text-gold: #e0c097;
             --text-cream: #f4f1ea;
-            --glass: rgba(62, 39, 35, 0.95);
+            --accent-red: #800000;
+            --glass: rgba(37, 22, 20, 0.95);
+            --font-head: 'Cinzel', serif;
+            --font-body: 'Inter', sans-serif;
         }
+
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: var(--bg-wine);
-            color: var(--text-cream);
             margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            background-color: var(--bg-dark);
+            color: var(--text-cream);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-head);
+            color: var(--text-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0;
+        }
+
+        button {
+            font-family: var(--font-body);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* -------------------------------------------------------
+           AUTH SECTION
+           ------------------------------------------------------- */
+        #auth-section {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--bg-wine);
+            border: 1px solid rgba(224, 192, 151, 0.2);
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0 20px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #444;
+            color: var(--text-cream);
+            font-family: var(--font-body);
+            border-radius: 4px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--text-gold);
+        }
+
+        .btn-primary {
+            background: var(--text-gold);
+            color: var(--bg-dark);
+            border: none;
+            padding: 15px 30px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* -------------------------------------------------------
+           DASHBOARD
+           ------------------------------------------------------- */
+        #dashboard {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(224, 192, 151, 0.2);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-action {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--text-gold);
+            color: var(--text-gold);
+            font-size: 0.8rem;
+        }
+
+        .btn-action:hover {
+            background: var(--text-gold);
+            color: var(--bg-dark);
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .admin-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(224, 192, 151, 0.2);
+        }
+
+        .admin-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-body {
             padding: 20px;
         }
-        h1, h2, h3 { color: var(--text-gold); text-transform: uppercase; letter-spacing: 2px; }
-        
-        .container { max-width: 1200px; margin: 0 auto; }
-        
-        /* Auth Form */
-        #auth-section { max-width: 500px; margin: 50px auto; padding: 30px; background: var(--glass); border: 1px solid var(--text-gold); }
-        input, select, textarea {
-            width: 100%; padding: 10px; margin: 10px 0;
-            background: rgba(0,0,0,0.3); border: 1px solid #555; color: white;
-            box-sizing: border-box;
+
+        .card-body h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
-        button {
-            background: var(--text-gold); color: var(--bg-wine); border: none;
-            padding: 10px 20px; cursor: pointer; font-weight: bold; text-transform: uppercase;
+
+        .card-body p {
+            margin: 0 0 15px;
+            font-size: 0.9rem;
+            color: rgba(244, 241, 234, 0.7);
         }
-        button:hover { background: #fff; }
-        
-        /* Dashboard */
-        #dashboard { display: none; }
-        .header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--text-gold); padding-bottom: 20px; margin-bottom: 20px; }
-        
-        .product-list { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-        .product-card {
-            background: var(--bg-cotton); border: 1px solid #555; padding: 15px; position: relative;
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
         }
-        .product-card img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #555; margin-bottom: 10px; }
-        .product-card h3 { margin: 5px 0; font-size: 1.1em; }
-        .product-card .actions { display: flex; gap: 10px; margin-top: 10px; }
+
+        .btn-card {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            font-size: 0.8rem;
+        }
+
         .btn-edit { background: #444; color: white; }
-        .btn-delete { background: #800000; color: white; }
-        
-        /* Modal */
+        .btn-edit:hover { background: #666; }
+        .btn-delete { background: #3a1a1a; color: #ff8888; }
+        .btn-delete:hover { background: #500; color: white; }
+
+        /* -------------------------------------------------------
+           MODAL
+           ------------------------------------------------------- */
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 1000;
-            justify-content: center; align-items: center;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
+
         .modal-content {
-            background: var(--bg-wine); border: 1px solid var(--text-gold);
-            padding: 30px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+            background: var(--bg-wine);
+            border: 1px solid var(--text-gold);
+            padding: 40px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
-        .close { float: right; font-size: 24px; cursor: pointer; }
-        
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; color: var(--text-gold); }
-        
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--text-gold);
+            line-height: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Toast */
         .toast {
-            position: fixed; bottom: 20px; right: 20px;
-            background: var(--text-gold); color: var(--bg-wine);
-            padding: 15px 25px; display: none; z-index: 2000;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--text-gold);
+            color: var(--bg-dark);
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .variant-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="auth-section">
-        <h2>Admin Access</h2>
-        <p style="font-size: 0.9em; opacity: 0.8;">Enter your GitHub details to manage products.</p>
-        <div class="form-group">
-            <label>GitHub Username</label>
-            <input type="text" id="gh-username" placeholder="e.g. yourname" value="SMT-cmd">
-        </div>
-        <div class="form-group">
-            <label>Repository Name</label>
-            <input type="text" id="gh-repo" placeholder="e.g. RARE-ROOT" value="smt-cmd.github.io">
-        </div>
-        <div class="form-group">
-            <label>Personal Access Token (PAT)</label>
-            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" value="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">
-            <small style="display:block; margin-top:5px; opacity:0.6;">Requires 'repo' scope. <a href="#" onclick="alert('Once you log in, your token is saved securely in your browser.'); return false;" style="color:var(--text-gold)">Is this safe?</a></small>
-        </div>
-        <button onclick="login()">Access Dashboard</button>
+<div id="auth-section">
+    <h2>Command Access</h2>
+    <p style="opacity: 0.7; margin-bottom: 30px;">Enter credentials to manage the inventory.</p>
+    
+    <div style="text-align: left;">
+        <label style="color:var(--text-gold); font-size:0.8rem;">GITHUB USERNAME</label>
+        <input type="text" id="gh-username" placeholder="e.g. SMT-cmd" value="SMT-cmd">
+        
+        <label style="color:var(--text-gold); font-size:0.8rem;">REPOSITORY</label>
+        <input type="text" id="gh-repo" placeholder="e.g. smt-cmd.github.io" value="smt-cmd.github.io">
+        
+        <label style="color:var(--text-gold); font-size:0.8rem;">ACCESS TOKEN (PAT)</label>
+        <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" value="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">
     </div>
 
-    <div id="dashboard">
-        <div class="header-row">
-            <h2>Product Management</h2>
-            <div>
-                <a href="../index.html" target="_blank" style="text-decoration:none;"><button style="background:#555; margin-right:10px;">View Live Site</button></a>
-                <button onclick="openModal()">+ Add Product</button>
-                <button onclick="logout()" style="background:#444; color:white; margin-left:10px;">Logout</button>
-            </div>
+    <button class="btn-primary" onclick="login()">Initialize Session</button>
+</div>
+
+<div id="dashboard">
+    <div class="dashboard-header">
+        <div>
+            <h2>Inventory Command</h2>
+            <p style="margin:0; opacity:0.6;">Manage products, prices, and stock.</p>
         </div>
-        <div id="loading" style="text-align:center; display:none;">Loading products from GitHub...</div>
-        <div id="product-list" class="product-list"></div>
+        <div class="header-actions">
+            <a href="../index.html" target="_blank" style="text-decoration:none;">
+                <button class="btn-action">View Live Site</button>
+            </a>
+            <button class="btn-action" style="background:var(--text-gold); color:var(--bg-dark);" onclick="openModal()">+ Add Product</button>
+            <button class="btn-action" onclick="logout()" style="border-color:#555; color:#888;">Logout</button>
+        </div>
     </div>
+
+    <div id="loading" style="text-align:center; display:none; padding: 40px; color: var(--text-gold);">
+        <p>SYNCING WITH GITHUB...</p>
+    </div>
+    
+    <div id="product-list" class="product-list"></div>
 </div>
 
 <!-- Edit/Add Modal -->
@@ -119,23 +316,23 @@
             <input type="hidden" id="p-id">
             
             <div class="form-group">
-                <label>Name</label>
+                <label>PRODUCT NAME</label>
                 <input type="text" id="p-name" required>
             </div>
             
-            <div class="form-group" style="display:flex; gap:10px;">
-                <div style="flex:1;">
-                    <label>Price (₦)</label>
+            <div style="display:flex; gap:20px;">
+                <div class="form-group" style="flex:1;">
+                    <label>PRICE (₦)</label>
                     <input type="number" id="p-price" required>
                 </div>
-                <div style="flex:1;">
-                    <label>Sale Price (Optional)</label>
+                <div class="form-group" style="flex:1;">
+                    <label>SALE PRICE (OPTIONAL)</label>
                     <input type="number" id="p-sale">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Category</label>
+                <label>CATEGORY</label>
                 <select id="p-category">
                     <option value="The Exchange">The Exchange (Gym/Trader)</option>
                     <option value="Kinetic">Kinetic (Street Performance)</option>
@@ -144,7 +341,7 @@
             </div>
 
             <div class="form-group">
-                <label>Product Type (for search filtering)</label>
+                <label>PRODUCT TYPE (TAG)</label>
                 <input type="text" id="p-type" list="type-options" placeholder="Sweatshirt, Set, Pant...">
                 <datalist id="type-options">
                     <option value="Sweatshirt">
@@ -157,33 +354,36 @@
                 </datalist>
             </div>
 
-            <!-- Variants Section (Replaces simple Image/Color inputs) -->
-            <div class="form-group" style="background: rgba(0,0,0,0.2); padding: 15px; border: 1px solid #555;">
-                <label>Product Variants (Color + Image)</label>
+            <!-- Variants Section -->
+            <div class="form-group" style="background: rgba(0,0,0,0.2); padding: 20px; border: 1px solid #444; border-radius:4px;">
+                <label style="margin-bottom:15px; display:flex; justify-content:space-between;">
+                    VARIANTS (COLOR + IMAGE)
+                    <small style="font-weight:normal; opacity:0.6;">Upload to <a href="https://files.fm/" target="_blank" style="color:var(--text-gold);">Files.fm</a></small>
+                </label>
                 <div id="variants-container">
                     <!-- Dynamic rows go here -->
                 </div>
-                <button type="button" onclick="addVariant()" style="margin-top:10px; font-size:0.8em;">+ Add Color Variant</button>
-                <small style="display:block; margin-top:5px; opacity:0.6;">Upload images to <a href="https://files.fm/" target="_blank" style="color:var(--text-gold);">Files.fm</a> first.</small>
+                <button type="button" onclick="addVariant()" class="btn-action" style="width:100%; margin-top:10px; border-style:dashed;">+ Add Color Variant</button>
             </div>
 
             <div class="form-group">
-                <label>Sizes (comma separated)</label>
-                <input type="text" id="p-sizes" placeholder="S, M, L, XL">
+                <label>SIZES (COMMA SEPARATED)</label>
+                <input type="text" id="p-sizes" placeholder="S, M, L, XL" value="S, M, L, XL, XXL">
             </div>
 
             <div class="form-group">
-                <label>
-                    <input type="checkbox" id="p-hidden" style="width:auto;"> Hide Product
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                    <input type="checkbox" id="p-hidden" style="width:auto; margin:0;"> 
+                    HIDE FROM STORE
                 </label>
             </div>
 
-            <button type="submit" id="save-btn">Save Changes</button>
+            <button type="submit" id="save-btn" class="btn-primary" style="margin-top:20px;">Save Changes</button>
         </form>
     </div>
 </div>
 
-<div id="toast">Saved successfully!</div>
+<div id="toast" class="toast">Saved successfully!</div>
 
 <script>
     // State
@@ -196,13 +396,11 @@
         const saved = localStorage.getItem('rare_root_admin');
         if (saved) {
             config = JSON.parse(saved);
-            // Auto-fill fields (just in case)
             document.getElementById('gh-username').value = config.user;
             document.getElementById('gh-repo').value = config.repo;
             document.getElementById('gh-token').value = config.token;
             
             // Auto Login
-            console.log('Auto-logging in...');
             login(); 
         }
         
@@ -210,7 +408,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const editId = urlParams.get('edit');
         if (editId) {
-            // Wait for products to load then open modal
             const checkLoad = setInterval(() => {
                 if (productsData.products.length > 0) {
                     clearInterval(checkLoad);
@@ -296,17 +493,21 @@
         const list = document.getElementById('product-list');
         list.innerHTML = '';
         
-        // Reverse to show newest first if they have sequential IDs, or just map
         [...productsData.products].reverse().forEach(p => {
             const div = document.createElement('div');
-            div.className = 'product-card';
+            div.className = 'admin-card';
             div.innerHTML = `
                 <img src="${p.img}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
-                <h3>${p.name}</h3>
-                <p>${p.hidden ? '<span style="color:red">[HIDDEN]</span> ' : ''}₦${p.price.toLocaleString()}</p>
-                <div class="actions">
-                    <button class="btn-edit" onclick="editProduct(${p.id})">Edit</button>
-                    <button class="btn-delete" onclick="deleteProduct(${p.id})">Delete</button>
+                <div class="card-body">
+                    <h3>${p.name}</h3>
+                    <p>
+                        ${p.hidden ? '<span style="color:#ff8888; font-weight:bold;">[HIDDEN]</span> ' : ''}
+                        ₦${p.price.toLocaleString()}
+                    </p>
+                    <div class="card-actions">
+                        <button class="btn-card btn-edit" onclick="editProduct(${p.id})">EDIT</button>
+                        <button class="btn-card btn-delete" onclick="deleteProduct(${p.id})">DELETE</button>
+                    </div>
                 </div>
             `;
             list.appendChild(div);
@@ -343,18 +544,12 @@
             
             const data = await res.json();
             sha = data.content.sha;
-            showToast('Saved! Changes will appear on the site in ~2 mins (GitHub Pages build time).');
+            showToast('Saved! Changes will appear on the site in ~2 mins.');
             closeModal();
             return true;
         } catch (e) {
             console.error(e);
-            let msg = e.message;
-            if (msg.includes('403') || msg.includes('access token')) {
-                msg = 'PERMISSION ERROR: Your GitHub Token does not have write access. \n\nPlease generate a new "Classic" Token with the "repo" scope checked.';
-            } else if (msg.includes('404')) {
-                msg = 'REPO NOT FOUND: Check your Username and Repository Name.';
-            }
-            alert('Error saving to GitHub:\n' + msg);
+            alert('Error saving to GitHub:\n' + e.message);
             return false;
         } finally {
             if(btn) btn.innerText = originalText;
@@ -377,17 +572,15 @@
 
     function addVariant(color = '', img = '') {
         const div = document.createElement('div');
-        div.style.display = 'flex';
-        div.style.gap = '10px';
-        div.style.marginBottom = '10px';
+        div.className = 'variant-row';
         div.innerHTML = `
             <div style="flex:1;">
-                <input type="text" class="v-color" placeholder="Color Name (e.g. Black)" value="${color}" required>
+                <input type="text" class="v-color" placeholder="Color Name (e.g. Black)" value="${color}" required style="margin:0;">
             </div>
             <div style="flex:2;">
-                <input type="url" class="v-img" placeholder="Image URL" value="${img}" required>
+                <input type="url" class="v-img" placeholder="Image URL" value="${img}" required style="margin:0;">
             </div>
-            <button type="button" onclick="this.parentElement.remove()" style="background:#800; padding:0 10px;">X</button>
+            <button type="button" onclick="this.parentElement.remove()" style="background:#3a1a1a; color:white; border:none; padding:0 10px;">X</button>
         `;
         document.getElementById('variants-container').appendChild(div);
     }
@@ -401,7 +594,7 @@
         document.getElementById('p-price').value = p.price;
         document.getElementById('p-sale').value = p.sale_price || '';
         document.getElementById('p-category').value = p.category;
-        document.getElementById('p-type').value = p.type || ''; // New field
+        document.getElementById('p-type').value = p.type || '';
         document.getElementById('p-sizes').value = p.sizes ? p.sizes.join(', ') : '';
         document.getElementById('p-hidden').checked = !!p.hidden;
 
@@ -412,17 +605,11 @@
         if (p.variants && p.variants.length > 0) {
             p.variants.forEach(v => addVariant(v.color, v.image));
         } else {
-            // Backward compatibility: Create variants from legacy img + colors
-            // If colors exist, create a variant for each, using the same main image (or just the first one)
-            // Or just create one variant with the main image and first color
             if (p.colors && p.colors.length > 0) {
-                p.colors.forEach((c, idx) => {
-                    // Use the main image for all, or try to find a better way?
-                    // For now, use main image for all
+                p.colors.forEach((c) => {
                     addVariant(c.color, p.img);
                 });
             } else {
-                // No colors? Just one variant with main image
                 addVariant('Standard', p.img);
             }
         }
@@ -451,7 +638,7 @@
         const isNew = !idStr;
         
         // Gather Variants
-        const variantRows = document.querySelectorAll('#variants-container > div');
+        const variantRows = document.querySelectorAll('#variants-container > .variant-row');
         const variants = [];
         variantRows.forEach(row => {
             const color = row.querySelector('.v-color').value.trim();
@@ -472,13 +659,11 @@
             price: parseInt(document.getElementById('p-price').value),
             sale_price: document.getElementById('p-sale').value ? parseInt(document.getElementById('p-sale').value) : null,
             category: document.getElementById('p-category').value,
-            type: document.getElementById('p-type').value, // New field
+            type: document.getElementById('p-type').value,
             
-            // Backward compatibility fields (derived from variants)
             img: variants[0].image, 
             colors: variants.map(v => ({ color: v.color })),
-            
-            variants: variants, // New rich data
+            variants: variants,
             
             sizes: document.getElementById('p-sizes').value.split(',').map(s => s.trim()).filter(s => s),
             hidden: document.getElementById('p-hidden').checked
