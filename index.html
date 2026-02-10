@@ -257,23 +257,7 @@ nav {
     color: var(--bg-wine);
 }
 
-.admin-edit-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--text-gold);
-    color: var(--bg-wine);
-    border: none;
-    padding: 5px 10px;
-    font-weight: bold;
-    cursor: pointer;
-    display: none; /* Hidden by default */
-    z-index: 20;
-}
 
-body.admin-mode .admin-edit-btn {
-    display: block;
-}
 
 .product-info {
     padding: 20px;
@@ -953,20 +937,13 @@ async function fetchProducts() {
         products = data.products || [];
         console.log('Loaded products:', products.length, products); // Debugging
         initializeShop();
-        checkAdminMode(); // Check if user is admin to show edit buttons
     } catch (error) {
         console.error('Error loading products:', error);
         showToast('Error loading shop inventory.');
     }
 }
 
-function checkAdminMode() {
-    const adminConfig = localStorage.getItem('rare_root_admin');
-    if (adminConfig) {
-        document.body.classList.add('admin-mode');
-        showToast('Admin Mode Active: Edit buttons enabled');
-    }
-}
+
 
 function initializeShop() {
     // Render all categories
@@ -1024,9 +1001,6 @@ function renderCategory(categoryName, elementId) {
                 <img src="${product.img}" alt="${product.name}" loading="lazy">
                 <button class="add-to-cart-btn">
                     Quick View
-                </button>
-                <button class="admin-edit-btn" onclick="event.stopPropagation(); window.location.href='admin/index.html?edit=${product.id}'">
-                    ✎ Edit
                 </button>
             </div>
             <div class="product-info">
