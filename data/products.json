@@ -22,27 +22,6 @@
       "hidden": false
     },
     {
-      "id": 102,
-      "name": "Market Close Tank",
-      "price": 12000,
-      "category": "Gym Wear for Traders",
-      "img": "https://images.unsplash.com/photo-1503341455253-b2e72333dbdb?auto=format&fit=crop&w=600&q=80",
-      "sizes": [
-        "S",
-        "M",
-        "L"
-      ],
-      "colors": [
-        {
-          "color": "White"
-        },
-        {
-          "color": "Grey"
-        }
-      ],
-      "hidden": false
-    },
-    {
       "id": 301,
       "name": "Executive Lounge Set",
       "price": 30000,
