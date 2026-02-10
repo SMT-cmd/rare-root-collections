@@ -82,15 +82,15 @@
         <p style="font-size: 0.9em; opacity: 0.8;">Enter your GitHub details to manage products.</p>
         <div class="form-group">
             <label>GitHub Username</label>
-            <input type="text" id="gh-username" placeholder="e.g. yourname">
+            <input type="text" id="gh-username" placeholder="e.g. yourname" value="SMT-cmd">
         </div>
         <div class="form-group">
             <label>Repository Name</label>
-            <input type="text" id="gh-repo" placeholder="e.g. RARE-ROOT">
+            <input type="text" id="gh-repo" placeholder="e.g. RARE-ROOT" value="smt-cmd.github.io">
         </div>
         <div class="form-group">
             <label>Personal Access Token (PAT)</label>
-            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+            <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx" value="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">
             <small style="display:block; margin-top:5px; opacity:0.6;">Requires 'repo' scope. <a href="#" onclick="alert('Once you log in, your token is saved securely in your browser.'); return false;" style="color:var(--text-gold)">Is this safe?</a></small>
         </div>
         <button onclick="login()">Access Dashboard</button>
@@ -214,9 +214,9 @@
     }
 
     async function login() {
-        const user = document.getElementById('gh-username').value;
-        const repo = document.getElementById('gh-repo').value;
-        const token = document.getElementById('gh-token').value;
+        const user = document.getElementById('gh-username').value.trim();
+        const repo = document.getElementById('gh-repo').value.trim();
+        const token = document.getElementById('gh-token').value.trim();
 
         if (!user || !repo || !token) {
             alert('Please fill all fields');
@@ -264,7 +264,13 @@
             renderProducts();
         } catch (e) {
             console.error(e);
-            alert('Failed to load products. Check credentials and repository name.');
+            let msg = e.message;
+            if (msg.includes('403') || msg.includes('access token')) {
+                 msg = 'PERMISSION ERROR: Token invalid or missing "repo" scope.';
+            } else if (msg.includes('404')) {
+                 msg = 'REPO NOT FOUND: Check Username/Repo name.';
+            }
+            alert('Failed to load products:\n' + msg);
             document.getElementById('auth-section').style.display = 'block';
             document.getElementById('dashboard').style.display = 'none';
         } finally {
@@ -299,11 +305,7 @@
         if(btn) btn.innerText = 'Pushing to GitHub...';
 
         try {
-            // Encode content
             const content = JSON.stringify(productsData, null, 2);
-            // Simple Base64 encode (ASCII only) - using btoa for simplicity, 
-            // for full UTF-8 support we might need more but products usually simple text.
-            // Better UTF-8 encode:
             const base64Content = btoa(unescape(encodeURIComponent(content)));
 
             const body = {
@@ -326,11 +328,20 @@
             if (!res.ok) throw new Error(await res.text());
             
             const data = await res.json();
-            sha = data.content.sha; // Update SHA for next commit
-            showToast('Changes saved to GitHub!');
+            sha = data.content.sha;
+            showToast('Saved! Changes will appear on the site in ~2 mins (GitHub Pages build time).');
             closeModal();
+            return true;
         } catch (e) {
-            alert('Error saving to GitHub: ' + e.message);
+            console.error(e);
+            let msg = e.message;
+            if (msg.includes('403') || msg.includes('access token')) {
+                msg = 'PERMISSION ERROR: Your GitHub Token does not have write access. \n\nPlease generate a new "Classic" Token with the "repo" scope checked.';
+            } else if (msg.includes('404')) {
+                msg = 'REPO NOT FOUND: Check your Username and Repository Name.';
+            }
+            alert('Error saving to GitHub:\n' + msg);
+            return false;
         } finally {
             if(btn) btn.innerText = originalText;
         }
@@ -409,9 +420,14 @@
     async function deleteProduct(id) {
         if (!confirm('Are you sure you want to delete this product?')) return;
         
+        const backup = JSON.parse(JSON.stringify(productsData));
         productsData.products = productsData.products.filter(p => p.id !== id);
         renderProducts();
-        await saveToGitHub();
+        const success = await saveToGitHub();
+        if (!success) {
+            productsData = backup;
+            renderProducts();
+        }
     }
 
     async function saveProduct(e) {
@@ -454,6 +470,8 @@
             hidden: document.getElementById('p-hidden').checked
         };
 
+        const backup = JSON.parse(JSON.stringify(productsData));
+
         if (isNew) {
             productsData.products.push(newProduct);
         } else {
@@ -462,7 +480,11 @@
         }
 
         renderProducts();
-        await saveToGitHub();
+        const success = await saveToGitHub();
+        if (!success) {
+            productsData = backup;
+            renderProducts();
+        }
     }
 </script>
 
