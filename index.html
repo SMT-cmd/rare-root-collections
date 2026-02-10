@@ -1034,12 +1034,47 @@ function openProductModal(id) {
     // Generate Size Options
     let sizeOptions = product.sizes ? product.sizes.map(s => `<option value="${s}">${s}</option>`).join('') : '<option>One Size</option>';
     
-    // Generate Color Options
-    let colorOptions = product.colors ? product.colors.map(c => `<option value="${c.color}">${c.color}</option>`).join('') : '<option>Standard</option>';
+    // Generate Color/Variant Logic
+    let variants = product.variants || [];
+    
+    // Fallback for legacy products
+    if (variants.length === 0 && product.colors) {
+        variants = product.colors.map(c => ({
+            color: c.color,
+            image: product.img // Use main image as fallback
+        }));
+    }
+    // If still no variants, create a dummy one
+    if (variants.length === 0) {
+        variants = [{color: 'Standard', image: product.img}];
+    }
+
+    // Generate Options
+    const colorOptions = variants.map(v => 
+        `<option value="${v.color}" data-img="${v.image}">${v.color}</option>`
+    ).join('');
+
+    // Generate Thumbnails
+    let thumbnailsHtml = '';
+    if (variants.length > 1) {
+        thumbnailsHtml = `<div class="modal-thumbnails" style="display:flex; gap:10px; margin-top:10px; overflow-x:auto; padding-bottom:5px;">
+            ${variants.map(v => `
+                <img src="${v.image}" 
+                     alt="${v.color}" 
+                     style="width:60px; height:60px; object-fit:cover; border:1px solid #555; cursor:pointer; flex-shrink:0;" 
+                     onclick="updateModalImage('${v.image}', '${v.color}')"
+                     class="thumb-img">
+            `).join('')}
+        </div>`;
+    }
+
+    // Initial Image (first variant or product main image)
+    const initialImg = variants[0].image || product.img;
 
     modalBody.innerHTML = `
         <div class="modal-left">
-            <img src="${product.img}" alt="${product.name}" class="modal-img">
+            <img src="${initialImg}" alt="${product.name}" class="modal-img" id="modal-main-img">
+            ${thumbnailsHtml}
         </div>
         <div class="modal-info">
             <h2>${product.name}</h2>
@@ -1055,7 +1090,7 @@ function openProductModal(id) {
             
             <div class="modal-opt-group">
                 <label class="modal-opt-label">Color</label>
-                <select id="modal-color" class="modal-select">
+                <select id="modal-color" class="modal-select" onchange="onColorChange(this)">
                     ${colorOptions}
                 </select>
             </div>
@@ -1065,6 +1100,25 @@ function openProductModal(id) {
     `;
 
     modal.style.display = "block";
+}
+
+function updateModalImage(src, color) {
+    const img = document.getElementById('modal-main-img');
+    if(img) img.src = src;
+    
+    // Also update the select dropdown if color is provided
+    if (color) {
+        const select = document.getElementById('modal-color');
+        if (select) select.value = color;
+    }
+}
+
+function onColorChange(select) {
+    const selectedOption = select.options[select.selectedIndex];
+    const imgSrc = selectedOption.getAttribute('data-img');
+    if (imgSrc) {
+        updateModalImage(imgSrc);
+    }
 }
 
 function closeModal() {
@@ -1084,11 +1138,16 @@ function addToCartFromModal() {
     if (!currentModalProduct) return;
 
     const size = document.getElementById('modal-size').value;
-    const color = document.getElementById('modal-color').value;
+    const colorSelect = document.getElementById('modal-color');
+    const color = colorSelect.value;
+    const selectedOption = colorSelect.options[colorSelect.selectedIndex];
+    const variantImg = selectedOption.getAttribute('data-img');
+
     const price = currentModalProduct.sale_price || currentModalProduct.price;
 
     const cartItem = {
         ...currentModalProduct,
+        img: variantImg || currentModalProduct.img, // Use variant image
         selectedSize: size,
         selectedColor: color,
         finalPrice: price,
@@ -1125,13 +1184,16 @@ function updateCartUI() {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'cart-item';
             itemDiv.innerHTML = `
-                <div>
-                    <div style="color:white; font-weight:bold;">${item.name}</div>
-                    <div style="font-size:0.8rem; color:#888;">${item.selectedSize} | ${item.selectedColor}</div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="${item.img}" style="width:50px; height:50px; object-fit:cover; border:1px solid #333;">
+                    <div>
+                        <div style="color:white; font-weight:bold; font-size:0.9rem;">${item.name}</div>
+                        <div style="font-size:0.8rem; color:#888;">${item.selectedSize} | ${item.selectedColor}</div>
+                    </div>
                 </div>
                 <div style="text-align:right;">
                     <div>₦${item.finalPrice.toLocaleString()}</div>
-                    <div style="color:#aa4444; font-size:0.8rem; cursor:pointer;" onclick="removeFromCart(${item.cartId})">Remove</div>
+                    <div style="color:#aa4444; font-size:0.8rem; cursor:pointer; margin-top:5px;" onclick="removeFromCart(${item.cartId})">Remove</div>
                 </div>
             `;
             cartItemsContainer.appendChild(itemDiv);
