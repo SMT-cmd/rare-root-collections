@@ -6,11 +6,26 @@
       "price": 18000,
       "category": "The Exchange",
       "img": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=600&q=80",
-      "sizes": ["M", "L", "XL"],
-      "colors": [{ "color": "Black" }, { "color": "Navy" }],
+      "sizes": [
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        {
+          "color": "Black"
+        },
+        {
+          "color": "Navy"
+        }
+      ],
       "hidden": false,
       "description": "Oversized pump cover for the serious trader. Heavyweight cotton.",
-      "tags": ["T-Shirt", "Oversized", "Gym"]
+      "tags": [
+        "T-Shirt",
+        "Oversized",
+        "Gym"
+      ]
     },
     {
       "id": 102,
@@ -18,11 +33,26 @@
       "price": 12000,
       "category": "The Exchange",
       "img": "https://images.unsplash.com/photo-1503341455253-b2e72333dbdb?auto=format&fit=crop&w=600&q=80",
-      "sizes": ["S", "M", "L"],
-      "colors": [{ "color": "White" }, { "color": "Grey" }],
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        {
+          "color": "White"
+        },
+        {
+          "color": "Grey"
+        }
+      ],
       "hidden": false,
       "description": "Lightweight tank top for high intensity sessions.",
-      "tags": ["Vest", "Tank Top", "Gym"]
+      "tags": [
+        "Vest",
+        "Tank Top",
+        "Gym"
+      ]
     },
     {
       "id": 201,
@@ -30,11 +60,23 @@
       "price": 25000,
       "category": "Kinetic",
       "img": "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80",
-      "sizes": ["L", "XL", "XXL"],
-      "colors": [{ "color": "Vintage Black" }],
+      "sizes": [
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        {
+          "color": "Vintage Black"
+        }
+      ],
       "hidden": false,
       "description": "Heavy blend hoodie with vintage wash finish.",
-      "tags": ["Hoodie", "Sweatshirt", "Winter"]
+      "tags": [
+        "Hoodie",
+        "Sweatshirt",
+        "Winter"
+      ]
     },
     {
       "id": 202,
@@ -42,21 +84,46 @@
       "price": 15000,
       "category": "Kinetic",
       "img": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80",
-      "sizes": ["M", "L", "XL"],
-      "colors": [{ "color": "Sand" }, { "color": "Olive" }],
+      "sizes": [
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        {
+          "color": "Sand"
+        },
+        {
+          "color": "Olive"
+        }
+      ],
       "hidden": false
     },
     {
       "id": 301,
-      "name": "Executive Lounge Set",
-      "price": 30000,
+      "name": "Executive Lounge ",
+      "price": 15000,
+      "sale_price": 25000,
       "category": "Urban Archive",
-      "img": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80",
-      "sizes": ["M", "L", "XL"],
-      "colors": [{ "color": "Beige" }],
-      "hidden": false,
-      "description": "Full palazzo style lounge set. Comfort meets luxury.",
-      "tags": ["Palazzo", "Set", "Tracksuit", "Lounge"]
+      "type": "T-Shirt",
+      "img": "https://files.fm/thumb_show.php?i=59mby3mx5t",
+      "colors": [
+        {
+          "color": "BLACK"
+        }
+      ],
+      "variants": [
+        {
+          "color": "BLACK",
+          "image": "https://files.fm/thumb_show.php?i=59mby3mx5t"
+        }
+      ],
+      "sizes": [
+        "M",
+        "L",
+        "XL"
+      ],
+      "hidden": false
     }
   ]
 }
