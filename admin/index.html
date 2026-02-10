@@ -319,6 +319,11 @@
                 <label>PRODUCT NAME</label>
                 <input type="text" id="p-name" required>
             </div>
+
+            <div class="form-group">
+                <label>DESCRIPTION</label>
+                <textarea id="p-description" rows="3" placeholder="Enter product description..."></textarea>
+            </div>
             
             <div style="display:flex; gap:20px;">
                 <div class="form-group" style="flex:1;">
@@ -591,6 +596,7 @@
 
         document.getElementById('p-id').value = p.id;
         document.getElementById('p-name').value = p.name;
+        document.getElementById('p-description').value = p.description || '';
         document.getElementById('p-price').value = p.price;
         document.getElementById('p-sale').value = p.sale_price || '';
         document.getElementById('p-category').value = p.category;
@@ -656,6 +662,7 @@
         const newProduct = {
             id: isNew ? Date.now() : parseInt(idStr),
             name: document.getElementById('p-name').value,
+            description: document.getElementById('p-description').value,
             price: parseInt(document.getElementById('p-price').value),
             sale_price: document.getElementById('p-sale').value ? parseInt(document.getElementById('p-sale').value) : null,
             category: document.getElementById('p-category').value,
