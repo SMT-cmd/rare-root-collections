@@ -128,8 +128,8 @@
     {
       "id": 1770739476197,
       "name": "PUSH BEYOND LIMIT",
-      "price": 18000,
-      "sale_price": 25000,
+      "price": 20000,
+      "sale_price": 18000,
       "category": "Kinetic",
       "type": "T-Shirt",
       "img": "https://files.fm/thumb_show.php?i=squ48nktcq",
@@ -165,7 +165,11 @@
           "image": "https://files.fm/thumb_show.php?i=2teb2qptt7"
         }
       ],
-      "sizes": [],
+      "sizes": [
+        "M",
+        "L",
+        "XL"
+      ],
       "hidden": false
     }
   ]
