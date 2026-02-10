@@ -204,6 +204,19 @@
             console.log('Auto-logging in...');
             login(); 
         }
+        
+        // Check for ?edit=ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('edit');
+        if (editId) {
+            // Wait for products to load then open modal
+            const checkLoad = setInterval(() => {
+                if (productsData.products.length > 0) {
+                    clearInterval(checkLoad);
+                    editProduct(parseInt(editId));
+                }
+            }, 500);
+        }
     };
 
     function showToast(msg) {
