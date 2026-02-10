@@ -2,22 +2,27 @@
   "products": [
     {
       "id": 101,
-      "name": "The Bull Pump Cover",
+      "name": "BRAND BIG TEES",
       "price": 18000,
-      "category": "Gym Wear for Traders",
-      "img": "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=600&q=80",
+      "sale_price": 25000,
+      "category": "Urban Archive",
+      "type": "T-Shirt",
+      "img": "https://files.fm/f/59mby3mx5t",
+      "colors": [
+        {
+          "color": "Black"
+        }
+      ],
+      "variants": [
+        {
+          "color": "Black",
+          "image": "https://files.fm/f/59mby3mx5t"
+        }
+      ],
       "sizes": [
         "M",
         "L",
         "XL"
-      ],
-      "colors": [
-        {
-          "color": "Black"
-        },
-        {
-          "color": "Navy"
-        }
       ],
       "hidden": false
     }
