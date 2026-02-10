@@ -257,6 +257,24 @@ nav {
     color: var(--bg-wine);
 }
 
+.admin-edit-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--text-gold);
+    color: var(--bg-wine);
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+    z-index: 20;
+}
+
+body.admin-mode .admin-edit-btn {
+    display: block;
+}
+
 .product-info {
     padding: 20px;
     text-align: center;
@@ -910,13 +928,43 @@ let currentModalProduct = null;
 // Fetch Products from JSON (Simulating Database)
 async function fetchProducts() {
     try {
-        const response = await fetch('data/products.json?t=' + new Date().getTime());
+        // Determine Raw URL: Use Admin Config if available (for instant feedback), otherwise default
+        let user = 'SMT-cmd';
+        let repo = 'smt-cmd.github.io';
+        
+        // If user is admin, use their configured repo to ensure they see their own changes immediately
+        const adminConfig = JSON.parse(localStorage.getItem('rare_root_admin') || 'null');
+        if (adminConfig && adminConfig.user && adminConfig.repo) {
+            user = adminConfig.user;
+            repo = adminConfig.repo;
+        }
+
+        // 1. Try fetching from GitHub Raw first (Faster updates, bypasses Pages build cache)
+        const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/main/data/products.json?t=` + new Date().getTime();
+        let response = await fetch(rawUrl);
+        
+        // 2. Fallback to local/relative if Raw fails (e.g. running locally or repo name mismatch)
+        if (!response.ok) {
+            console.warn('Raw GitHub fetch failed, falling back to local file.');
+            response = await fetch('data/products.json?t=' + new Date().getTime());
+        }
+
         const data = await response.json();
         products = data.products || [];
+        console.log('Loaded products:', products.length, products); // Debugging
         initializeShop();
+        checkAdminMode(); // Check if user is admin to show edit buttons
     } catch (error) {
         console.error('Error loading products:', error);
         showToast('Error loading shop inventory.');
+    }
+}
+
+function checkAdminMode() {
+    const adminConfig = localStorage.getItem('rare_root_admin');
+    if (adminConfig) {
+        document.body.classList.add('admin-mode');
+        showToast('Admin Mode Active: Edit buttons enabled');
     }
 }
 
@@ -928,9 +976,9 @@ function initializeShop() {
     document.querySelectorAll('.grid').forEach(grid => grid.innerHTML = '');
 
     // If we have specific grids in HTML, render to them
-    renderCategory("Gym Wear for Traders", "exchange-grid");
-    renderCategory("Street Wear", "kinetic-grid");
-    renderCategory("Brand Casuals", "urban-grid");
+    renderCategory("The Exchange", "exchange-grid");
+    renderCategory("Kinetic", "kinetic-grid");
+    renderCategory("Urban Archive", "urban-grid");
     
     // Also render others if they exist in data but not explicitly in HTML structure
     // (Future proofing: dynamic category creation could go here)
@@ -944,7 +992,8 @@ function renderCategory(categoryName, elementId) {
     if (!container) return; 
     
     // Filter by category and ensure not hidden
-    const items = products.filter(p => p.category === categoryName && !p.hidden);
+    // Normalize string comparison to avoid case/space issues
+    const items = products.filter(p => p.category.trim() === categoryName.trim() && !p.hidden);
     
     if (items.length === 0) {
         // Optional: Hide section if empty
@@ -975,6 +1024,9 @@ function renderCategory(categoryName, elementId) {
                 <img src="${product.img}" alt="${product.name}" loading="lazy">
                 <button class="add-to-cart-btn">
                     Quick View
+                </button>
+                <button class="admin-edit-btn" onclick="event.stopPropagation(); window.location.href='admin/index.html?edit=${product.id}'">
+                    ✎ Edit
                 </button>
             </div>
             <div class="product-info">
