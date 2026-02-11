@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RARE ROOT | Not Found</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #1a0f0d;
+            color: #f4f1ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        a {
+            color: #e0c097;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Page not found</h1>
+        <p><a href="./">Return to home</a></p>
+    </div>
+    <script>
+        const path = window.location.pathname.replace(/\/+$/, '');
+        if (path.endsWith('/admin')) {
+            const base = path.replace(/\/admin$/, '');
+            const target = `${base}/admin/index.html${window.location.search}${window.location.hash}`;
+            window.location.replace(target);
+        }
+    </script>
+</body>
+</html>
