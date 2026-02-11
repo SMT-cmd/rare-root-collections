@@ -453,28 +453,15 @@
         location.reload();
     }
 
-    // GitHub API Helper
-    async function ghFetch(path, options = {}) {
-        const url = `https://api.github.com/repos/${config.user}/${config.repo}/contents/${path}`;
-        const headers = {
-            'Authorization': `token ${config.token}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json',
-            ...options.headers
-        };
-        
-        const res = await fetch(url, { ...options, headers });
-        if (!res.ok) throw new Error(`GitHub API Error: ${res.statusText}`);
-        return res.json();
-    }
 
-    async function fetchProducts() {
-        const loader = document.getElementById('loading');
-        loader.style.display = 'block';
-        try {
-            const data = await ghFetch('data/products.json?ref=' + config.branch);
-            sha = data.sha; // Important for updates
-            // Decode Base64 content (handle potential newlines)
+                    if (String(err.message || err).includes('404')) {
+                        continue;
+                    }
+                    throw err;
+                }
+            }
+            if (!data) throw lastError || new Error('GitHub API Error');
+            sha = data.sha;
             const content = new TextDecoder().decode(Uint8Array.from(atob(data.content.replace(/\n/g, '')), c => c.charCodeAt(0)));
             productsData = JSON.parse(content);
             renderProducts();
