@@ -658,8 +658,18 @@ footer {
 }
 
 .search-box input {
-    border-color: rgba(224, 192, 151, 0.2);
+    width: 190px;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(224, 192, 151, 0.2);
+    border-radius: 4px;
+    color: var(--text-cream);
     font-family: var(--font-body);
+    font-size: 0.85rem;
+}
+
+.search-box input::placeholder {
+    color: rgba(244, 241, 234, 0.5);
 }
 
 /* Toast */
@@ -870,18 +880,35 @@ footer {
 
 /* Responsive Global */
 @media (max-width: 900px) {
-    .hero-title { font-size: 3rem; } /* Reduced from 3.5rem */
-    .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; } /* 2 col on mobile */
+    nav { padding: 14px 18px; }
+    .hero-title { font-size: 3rem; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
     .footer-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-    .nav-logo-img { height: 90px; }
+    .nav-logo-img { height: 72px; }
+    .nav-actions { gap: 12px; }
+    .menu-btn { font-size: 1.6rem; }
+    .add-to-cart-btn { opacity: 1; transform: translateY(0); }
+    .product-info h3 { font-size: 0.85rem; }
+    .product-info .price { font-size: 0.9rem; }
+    .search-box { display: none; }
 }
 
 @media (max-width: 600px) {
-    .hero { padding: 120px 20px; }
+    nav { padding: 12px 14px; }
+    .hero { padding: 110px 16px; }
     .hero-title { font-size: 2.5rem; }
-    .collection-header { margin: 80px 0 40px; }
-    .nav-actions { gap: 15px; }
+    .collection-header { margin: 70px 0 30px; }
+    .nav-actions { gap: 10px; }
+    .nav-logo-img { height: 60px; }
+    .grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); gap: 12px; }
+    .product-info { padding: 10px 0; }
+    .product-info h3 { font-size: 0.82rem; }
+    .product-info .price { font-size: 0.85rem; }
+    .menu-drawer, .cart-drawer { width: 100%; max-width: 100%; }
+    .menu-links a { font-size: 1rem; }
     .cart-drawer { width: 100%; }
+    .modal-left { height: 45vh; }
+    .modal-img { height: 45vh; }
 }
     </style>
     <!-- Favicon -->
@@ -959,7 +986,7 @@ footer {
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" id="footer">
         <div class="footer-content">
             <div class="footer-col brand-col">
                 <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" class="footer-logo">
@@ -975,7 +1002,7 @@ footer {
                 <h4>Support</h4>
                 <a href="#">Shipping & Returns</a>
                 <a href="#">Size Guide</a>
-                <a href="#">Contact Us</a>
+                <a href="#footer">Contact Us</a>
                 <a href="admin/index.html" style="opacity: 0.5; font-size: 0.8rem;">Admin Access</a>
             </div>
             <div class="footer-col">
@@ -1004,7 +1031,7 @@ footer {
             <li><a href="#exchange-grid" onclick="toggleMenu()">The Exchange</a></li>
             <li><a href="#kinetic-grid" onclick="toggleMenu()">Kinetic</a></li>
             <li><a href="#urban-grid" onclick="toggleMenu()">Urban Archive</a></li>
-            <li><a href="footer" onclick="toggleMenu()">Contact</a></li>
+            <li><a href="#footer" onclick="toggleMenu()">Contact</a></li>
         </ul>
     </div>
 
@@ -1049,31 +1076,42 @@ let currentModalProduct = null;
 // Fetch Products from JSON (Simulating Database)
 async function fetchProducts() {
     try {
-        // Determine Raw URL: Use Admin Config if available (for instant feedback), otherwise default
         let user = 'SMT-cmd';
         let repo = 'smt-cmd.github.io';
-        
-        // If user is admin, use their configured repo to ensure they see their own changes immediately
+
         const adminConfig = JSON.parse(localStorage.getItem('rare_root_admin') || 'null');
         if (adminConfig && adminConfig.user && adminConfig.repo) {
             user = adminConfig.user;
             repo = adminConfig.repo;
         }
 
-        // 1. Try fetching from GitHub Raw first (Faster updates, bypasses Pages build cache)
-        const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/main/data/products.json?t=` + new Date().getTime();
-        let response = await fetch(rawUrl);
-        
-        // 2. Fallback to local/relative if Raw fails (e.g. running locally or repo name mismatch)
-        if (!response.ok) {
-            console.warn('Raw GitHub fetch failed, falling back to local file.');
-            response = await fetch('data/products.json?t=' + new Date().getTime());
+        const cacheBust = `t=${Date.now()}`;
+        const localUrl = new URL(`data/products.json?${cacheBust}`, window.location.href).toString();
+        const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/main/data/products.json?${cacheBust}`;
+        const cdnUrl = `https://cdn.jsdelivr.net/gh/${user}/${repo}@main/data/products.json?${cacheBust}`;
+
+        const sources = [localUrl, rawUrl, cdnUrl];
+        let lastError = null;
+
+        for (const url of sources) {
+            try {
+                const response = await fetch(url, { cache: 'no-store' });
+                if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+                const data = await response.json();
+                if (data && Array.isArray(data.products)) {
+                    products = data.products;
+                    console.log('Loaded products:', products.length, url);
+                    initializeShop();
+                    return;
+                }
+                throw new Error('Invalid products format');
+            } catch (err) {
+                lastError = err;
+            }
         }
 
-        const data = await response.json();
-        products = data.products || [];
-        console.log('Loaded products:', products.length, products); // Debugging
-        initializeShop();
+        console.error('Error loading products:', lastError);
+        showToast('Error loading shop inventory.');
     } catch (error) {
         console.error('Error loading products:', error);
         showToast('Error loading shop inventory.');
