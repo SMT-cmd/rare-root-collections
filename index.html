@@ -6,6 +6,11 @@
     <title>RARE ROOT | Prestige</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
     <style>
 /* -------------------------------------------------------
    THEME: PRESTIGE STREETWEAR (Wine, Gold, Dark)
@@ -281,13 +286,15 @@ nav {
     border-radius: 0;
     overflow: visible; /* Allow hover effects to spill if needed */
     cursor: pointer;
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     position: relative;
-    border: none;
+    border: 1px solid transparent;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
+    border-color: rgba(224, 192, 151, 0.1);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .product-image-container {
@@ -298,6 +305,11 @@ nav {
     position: relative;
     background: #111;
     border-radius: 2px;
+    transition: border-color 0.4s;
+}
+
+.product-card:hover .product-image-container {
+    border-color: rgba(224, 192, 151, 0.3);
 }
 
 .product-image-container img {
@@ -730,11 +742,47 @@ footer {
     padding: 20px;
 }
 
-.modal-img {
+.modal-img-container {
+    position: relative;
     width: 100%;
     height: 500px;
-    object-fit: cover; /* Ensure full image is seen, might crop slightly but better for fashion */
     margin-bottom: 20px;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.modal-img-container:active {
+    cursor: grabbing;
+}
+
+.swipe-hint {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    color: var(--text-gold);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    pointer-events: none;
+    opacity: 0.8;
+    display: none; /* Only show on mobile */
+}
+
+@media (max-width: 900px) {
+    .swipe-hint {
+        display: block;
+    }
+}
+
+.modal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
 }
 
 .modal-thumbnails {
@@ -1054,6 +1102,20 @@ footer {
 
     <div id="toast" class="toast">Notification</div>
 
+    <!-- Prestige Loader -->
+    <div id="prestige-loader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-dark); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition: opacity 0.8s ease;">
+        <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" style="height:100px; margin-bottom:20px; filter:drop-shadow(0 0 10px rgba(224, 192, 151, 0.2));">
+        <div style="width:40px; height:1px; background:var(--text-gold); animation: pulse 1.5s infinite;"></div>
+    </div>
+
+    <style>
+        @keyframes pulse {
+            0% { width: 0; opacity: 0; }
+            50% { width: 40px; opacity: 1; }
+            100% { width: 0; opacity: 0; }
+        }
+    </style>
+
     <!-- Product Details Modal -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
@@ -1072,49 +1134,62 @@ footer {
 let products = [];
 let cart = [];
 let currentModalProduct = null;
+let db;
 
-// Fetch Products from JSON (Simulating Database)
+// Firebase Configuration (Replace with your actual keys from Firebase Console)
+const FIREBASE_CONFIG = { 
+    apiKey: "AIzaSyDUemRdj8Q65vuid8ePqliNdrUmCBQjAiQ", 
+    authDomain: "rare-root.firebaseapp.com", 
+    projectId: "rare-root", 
+    storageBucket: "rare-root.firebasestorage.app", 
+    messagingSenderId: "555337627727", 
+    appId: "1:555337627727:web:1e642ad1cbb5f2d6b7523a", 
+    measurementId: "G-4QG0W6KZMN" 
+};
+
+function initFirebase() {
+    if (!firebase.apps.length) {
+        firebase.initializeApp(FIREBASE_CONFIG);
+    }
+    db = firebase.firestore();
+}
+
+// Fetch Products from Firebase Firestore
 async function fetchProducts() {
     try {
-        let user = 'SMT-cmd';
-        let repo = 'smt-cmd.github.io';
+        initFirebase();
+        
+        const snapshot = await db.collection('products').get();
+        products = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
 
-        const adminConfig = JSON.parse(localStorage.getItem('rare_root_admin') || 'null');
-        if (adminConfig && adminConfig.user && adminConfig.repo) {
-            user = adminConfig.user;
-            repo = adminConfig.repo;
-        }
-
-        const cacheBust = `t=${Date.now()}`;
-        const localUrl = new URL(`data/products.json?${cacheBust}`, window.location.href).toString();
-        const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/main/data/products.json?${cacheBust}`;
-        const cdnUrl = `https://cdn.jsdelivr.net/gh/${user}/${repo}@main/data/products.json?${cacheBust}`;
-
-        const sources = [localUrl, rawUrl, cdnUrl];
-        let lastError = null;
-
-        for (const url of sources) {
-            try {
-                const response = await fetch(url, { cache: 'no-store' });
-                if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
-                const data = await response.json();
-                if (data && Array.isArray(data.products)) {
-                    products = data.products;
-                    console.log('Loaded products:', products.length, url);
-                    initializeShop();
-                    return;
-                }
-                throw new Error('Invalid products format');
-            } catch (err) {
-                lastError = err;
-            }
-        }
-
-        console.error('Error loading products:', lastError);
-        showToast('Error loading shop inventory.');
+        console.log('Loaded products from Firebase:', products.length);
+        initializeShop();
+        hideLoader();
     } catch (error) {
-        console.error('Error loading products:', error);
-        showToast('Error loading shop inventory.');
+        console.error('Error loading products from Firebase:', error);
+        
+        // Fallback to local JSON if Firebase fails (for development/first run)
+        try {
+            const response = await fetch('data/products.json');
+            const data = await response.json();
+            products = data.products || [];
+            initializeShop();
+            hideLoader();
+        } catch (e) {
+            showToast('Error loading shop inventory.');
+            hideLoader();
+        }
+    }
+}
+
+function hideLoader() {
+    const loader = document.getElementById('prestige-loader');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 800);
     }
 }
 
@@ -1248,7 +1323,10 @@ function openProductModal(id) {
 
     modalBody.innerHTML = `
         <div class="modal-left">
-            <img src="${initialImg}" alt="${product.name}" class="modal-img" id="modal-main-img">
+            <div class="modal-img-container" id="modal-swipe-container">
+                <img src="${initialImg}" alt="${product.name}" class="modal-img" id="modal-main-img">
+                <div class="swipe-hint">Swipe to see colors</div>
+            </div>
             ${thumbnailsHtml}
         </div>
         <div class="modal-info">
@@ -1281,7 +1359,39 @@ function openProductModal(id) {
         </div>
     `;
 
+    // Add Swipe Logic
+    initSwipe(variants);
+
     modal.style.display = "block";
+}
+
+function initSwipe(variants) {
+    const container = document.getElementById('modal-swipe-container');
+    if (!container || variants.length <= 1) return;
+
+    let startX = 0;
+    let currentIndex = 0;
+
+    container.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    }, {passive: true});
+
+    container.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+
+        if (Math.abs(diff) > 50) { // Threshold for swipe
+            if (diff > 0) {
+                // Swipe Left -> Next
+                currentIndex = (currentIndex + 1) % variants.length;
+            } else {
+                // Swipe Right -> Prev
+                currentIndex = (currentIndex - 1 + variants.length) % variants.length;
+            }
+            const v = variants[currentIndex];
+            updateModalImage(v.image, v.color, document.querySelectorAll('.thumb-img')[currentIndex]);
+        }
+    }, {passive: true});
 }
 
 function updateModalImage(src, color, thumbEl) {
