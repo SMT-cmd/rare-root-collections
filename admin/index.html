@@ -8,19 +8,19 @@
     <link rel="icon" href="https://files.fm/thumb.php?i=y628qspy4s" type="image/jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
 
     <style>
         :root {
-            --bg-dark: #1a0f0d;
-            --bg-wine: #2c1b18;
-            --bg-card: #251614;
-            --text-gold: #e0c097;
-            --text-cream: #f4f1ea;
-            --accent-red: #800000;
-            --glass: rgba(37, 22, 20, 0.95);
+            --bg-dark: #080808;
+            --bg-glass: rgba(20, 20, 20, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-gold: #FFD700;
+            --text-cream: #ffffff;
+            --accent-yellow: #FFD700;
             --font-head: 'Cinzel', serif;
             --font-body: 'Inter', sans-serif;
         }
@@ -32,8 +32,10 @@
             padding: 0;
             font-family: var(--font-body);
             background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #080808 100%);
             color: var(--text-cream);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         h1, h2, h3, h4 {
@@ -44,57 +46,61 @@
             margin-top: 0;
         }
 
+        /* -------------------------------------------------------
+           GLASS UTILS
+           ------------------------------------------------------- */
+        .glass-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
         button {
             font-family: var(--font-body);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        /* -------------------------------------------------------
-           AUTH SECTION
-           ------------------------------------------------------- */
-        #auth-section {
-            max-width: 500px;
-            margin: 100px auto;
-            padding: 40px;
-            background: var(--bg-wine);
-            border: 1px solid rgba(224, 192, 151, 0.2);
-            border-radius: 4px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 15px;
             margin: 10px 0 20px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid #444;
-            color: var(--text-cream);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: white;
             font-family: var(--font-body);
-            border-radius: 4px;
+            border-radius: 12px;
+            transition: all 0.3s;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--text-gold);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
         }
 
         .btn-primary {
             background: var(--text-gold);
-            color: var(--bg-dark);
+            color: black;
             border: none;
-            padding: 15px 30px;
+            padding: 16px 30px;
             width: 100%;
             font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
         }
 
         .btn-primary:hover {
             background: #fff;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
         }
 
         /* -------------------------------------------------------
@@ -111,8 +117,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(224, 192, 151, 0.2);
-            padding-bottom: 20px;
+            padding: 25px 30px;
             margin-bottom: 40px;
         }
 
@@ -122,42 +127,42 @@
         }
 
         .btn-action {
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--text-gold);
-            color: var(--text-gold);
-            font-size: 0.8rem;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: white;
+            font-size: 0.85rem;
         }
 
         .btn-action:hover {
-            background: var(--text-gold);
-            color: var(--bg-dark);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--text-gold);
+            color: var(--text-gold);
         }
 
         .product-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
 
         .admin-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 8px;
+            padding: 0;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: all 0.4s;
         }
 
         .admin-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(224, 192, 151, 0.2);
+            transform: translateY(-8px);
+            border-color: var(--text-gold);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
         .admin-card img {
             width: 100%;
-            height: 250px;
+            height: 280px;
             object-fit: cover;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--border-glass);
         }
 
         .card-body {
@@ -165,14 +170,14 @@
         }
 
         .card-body h3 {
-            font-size: 1rem;
-            margin-bottom: 5px;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
         }
 
         .card-body p {
             margin: 0 0 15px;
             font-size: 0.9rem;
-            color: rgba(244, 241, 234, 0.7);
+            opacity: 0.6;
         }
 
         .card-actions {
@@ -182,15 +187,16 @@
 
         .btn-card {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             border: none;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            border-radius: 6px;
         }
 
-        .btn-edit { background: #444; color: white; }
-        .btn-edit:hover { background: #666; }
-        .btn-delete { background: #3a1a1a; color: #ff8888; }
-        .btn-delete:hover { background: #500; color: white; }
+        .btn-edit { background: var(--text-gold); color: black; }
+        .btn-edit:hover { background: white; }
+        .btn-delete { background: rgba(255, 0, 0, 0.1); color: #ff4444; border: 1px solid rgba(255, 0, 0, 0.2); }
+        .btn-delete:hover { background: #ff4444; color: white; }
 
         /* -------------------------------------------------------
            MODAL
@@ -202,41 +208,44 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .modal-content {
-            background: var(--bg-wine);
-            border: 1px solid var(--text-gold);
             padding: 40px;
-            width: 90%;
-            max-width: 700px;
+            width: 100%;
+            max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
         .close {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
+            top: 25px;
+            right: 25px;
+            font-size: 32px;
             cursor: pointer;
-            color: var(--text-gold);
+            color: white;
             line-height: 1;
+            opacity: 0.5;
+            transition: opacity 0.3s;
         }
+
+        .close:hover { opacity: 1; }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--text-gold);
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         /* Toast */
@@ -245,65 +254,104 @@
             bottom: 30px;
             right: 30px;
             background: var(--text-gold);
-            color: var(--bg-dark);
-            padding: 15px 30px;
-            border-radius: 4px;
-            font-weight: 600;
+            color: black;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-weight: bold;
             display: none;
             z-index: 2000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideIn 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
+            from { transform: translateX(120%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
 
         .variant-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 4px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 150px auto;
+            gap: 15px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-glass);
+        }
+
+        .v-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+        }
+
+        .v-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-label {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-label:hover {
+            background: var(--text-gold);
+            color: black;
+        }
+
+        #auth-section {
+            max-width: 450px;
+            margin: 100px auto;
+            padding: 50px 40px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-<div id="auth-section">
-    <div style="margin-bottom: 20px;">
-        <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" style="height: 80px; filter: drop-shadow(0 0 10px rgba(224, 192, 151, 0.3));">
+<div id="auth-section" class="glass-card">
+    <div style="margin-bottom: 30px;">
+        <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" style="height: 100px; filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));">
     </div>
-    <h2>Command Access</h2>
-    <p style="opacity: 0.7; margin-bottom: 30px;">Enter administrative passcode to manage the inventory.</p>
+    <h2>Command Center</h2>
+    <p style="opacity: 0.6; margin-bottom: 40px;">Enter administrative passcode</p>
     
-    <div style="text-align: left;">
-        <label style="color:var(--text-gold); font-size:0.8rem; letter-spacing: 1px;">ADMIN PASSCODE</label>
-        <input type="password" id="admin-passcode" placeholder="••••••••" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px;">
+    <div style="text-align: left; margin-bottom: 30px;">
+        <input type="password" id="admin-passcode" placeholder="••••••••" style="text-align: center; font-size: 1.8rem; letter-spacing: 8px; margin-bottom: 0;">
     </div>
 
-    <button class="btn-primary" onclick="login()">Enter Command Center</button>
+    <button class="btn-primary" onclick="login()">Initialize Access</button>
 </div>
 
 <div id="dashboard">
-    <div class="dashboard-header">
+    <div class="dashboard-header glass-card">
         <div>
             <h2>Inventory Command</h2>
-            <p style="margin:0; opacity:0.6;">Manage products, prices, and stock.</p>
+            <p style="margin:0; opacity:0.5;">Manage your premium collection.</p>
         </div>
         <div class="header-actions">
             <a href="../index.html" target="_blank" style="text-decoration:none;">
-                <button class="btn-action">View Live Site</button>
+                <button class="btn-action">Live Site</button>
             </a>
-            <button class="btn-action" style="background:var(--text-gold); color:var(--bg-dark);" onclick="openModal()">+ Add Product</button>
-            <button class="btn-action" onclick="logout()" style="border-color:#555; color:#888;">Logout</button>
+            <button class="btn-action" onclick="openOrders()">Orders</button>
+            <button class="btn-action" style="background:var(--text-gold); color:black; border:none; font-weight:bold;" onclick="openModal()">+ Add Product</button>
+            <button class="btn-action" onclick="logout()">Logout</button>
         </div>
     </div>
 
-    <div id="loading" style="text-align:center; display:none; padding: 40px; color: var(--text-gold);">
-        <p>SYNCING WITH DATABASE...</p>
+    <div id="loading" style="text-align:center; display:none; padding: 60px; color: var(--text-gold);">
+        <p style="letter-spacing: 2px;">SYNCING SECURE DATABASE...</p>
     </div>
     
     <div id="product-list" class="product-list"></div>
@@ -311,84 +359,104 @@
 
 <!-- Edit/Add Modal -->
 <div id="product-modal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content glass-card">
         <span class="close" onclick="closeModal()">&times;</span>
-        <h3 id="modal-title">Edit Product</h3>
+        <h3 id="modal-title" style="margin-bottom: 30px;">Edit Product</h3>
         <form id="product-form" onsubmit="saveProduct(event)">
             <input type="hidden" id="p-id">
             
-            <div class="form-group">
-                <label>PRODUCT NAME</label>
-                <input type="text" id="p-name" required>
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+                <div class="form-group">
+                    <label>PRODUCT NAME</label>
+                    <input type="text" id="p-name" placeholder="e.g. Rare Root Signature Tee" required>
+                </div>
+                <div class="form-group">
+                    <label>COLLECTION</label>
+                    <select id="p-category">
+                        <option value="THE EXCHANGE">THE EXCHANGE</option>
+                        <option value="KINETIC">KINETIC</option>
+                        <option value="URBAN ARCHIVE">URBAN ARCHIVE</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <div class="form-group">
+                    <label>PRODUCT TYPE (e.g. Hoodie, Tee)</label>
+                    <input type="text" id="p-type" list="type-options" placeholder="Sweatshirt, Set, Pant...">
+                    <datalist id="type-options">
+                        <option value="Sweatshirt">
+                        <option value="T-Shirt">
+                        <option value="Set">
+                        <option value="Pant">
+                        <option value="Shorts">
+                        <option value="Hoodie">
+                        <option value="Jacket">
+                    </datalist>
+                </div>
+                <div class="form-group">
+                    <label>AVAILABLE SIZES (COMMA SEPARATED)</label>
+                    <input type="text" id="p-sizes" placeholder="S, M, L, XL" value="S, M, L, XL, XXL">
+                </div>
             </div>
 
             <div class="form-group">
                 <label>DESCRIPTION</label>
-                <textarea id="p-description" rows="3" placeholder="Enter product description..."></textarea>
+                <textarea id="p-description" rows="3" placeholder="Premium 300GSM cotton, relaxed fit..."></textarea>
             </div>
             
-            <div style="display:flex; gap:20px;">
-                <div class="form-group" style="flex:1;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
+                <div class="form-group">
                     <label>PRICE (₦)</label>
-                    <input type="number" id="p-price" required>
+                    <input type="number" id="p-price" placeholder="55000" required>
                 </div>
-                <div class="form-group" style="flex:1;">
-                    <label>SALE PRICE (OPTIONAL)</label>
-                    <input type="number" id="p-sale">
+                <div class="form-group">
+                    <label>SALE PRICE (₦)</label>
+                    <input type="number" id="p-sale" placeholder="45000">
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label>CATEGORY</label>
-                <select id="p-category">
-                    <option value="The Exchange">The Exchange (Gym/Trader)</option>
-                    <option value="Kinetic">Kinetic (Street Performance)</option>
-                    <option value="Urban Archive">Urban Archive (Casual)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>PRODUCT TYPE (TAG)</label>
-                <input type="text" id="p-type" list="type-options" placeholder="Sweatshirt, Set, Pant...">
-                <datalist id="type-options">
-                    <option value="Sweatshirt">
-                    <option value="T-Shirt">
-                    <option value="Set">
-                    <option value="Pant">
-                    <option value="Shorts">
-                    <option value="Hoodie">
-                    <option value="Jacket">
-                </datalist>
+                <div class="form-group">
+                    <label>STOCK STATUS</label>
+                    <select id="p-stock">
+                        <option value="In Stock">In Stock</option>
+                        <option value="Low Stock">Low Stock</option>
+                        <option value="Out of Stock">Out of Stock</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Variants Section -->
-            <div class="form-group" style="background: rgba(0,0,0,0.2); padding: 20px; border: 1px solid #444; border-radius:4px;">
-                <label style="margin-bottom:15px; display:flex; justify-content:space-between;">
-                    VARIANTS (COLOR + IMAGE)
-                    <small style="font-weight:normal; opacity:0.6;">Images upload to Cloudinary</small>
+            <div style="margin: 30px 0;">
+                <label style="display:block; margin-bottom:15px; font-weight:bold; color:var(--text-gold); font-size:0.75rem; letter-spacing:1px; text-transform:uppercase;">
+                    COLOR VARIANTS & IMAGES
+                    <small style="font-weight:normal; opacity:0.6; display:block; margin-top:5px; text-transform:none;">Upload high-quality images via Cloudinary</small>
                 </label>
-                <div id="variants-container">
+                <div id="variants-container" style="display:flex; flex-direction:column; gap:15px;">
                     <!-- Dynamic rows go here -->
                 </div>
-                <button type="button" onclick="addVariant()" class="btn-action" style="width:100%; margin-top:10px; border-style:dashed;">+ Add Color Variant</button>
+                <button type="button" onclick="addVariant()" class="btn-action" style="width:100%; margin-top:15px; border-style:dashed;">+ ADD NEW COLOR VARIANT</button>
             </div>
 
-            <div class="form-group">
-                <label>SIZES (COMMA SEPARATED)</label>
-                <input type="text" id="p-sizes" placeholder="S, M, L, XL" value="S, M, L, XL, XXL">
-            </div>
-
-            <div class="form-group">
-                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+            <div class="form-group" style="margin-bottom:30px;">
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; color:rgba(255,255,255,0.7); font-size:0.8rem;">
                     <input type="checkbox" id="p-hidden" style="width:auto; margin:0;"> 
-                    HIDE FROM STORE
+                    HIDE PRODUCT FROM PUBLIC STOREFRONT
                 </label>
             </div>
 
-            <button type="submit" id="save-btn" class="btn-primary" style="margin-top:20px;">Save Changes</button>
+            <button type="submit" id="save-btn" class="btn-primary" style="width:100%; padding:18px; font-size:0.9rem; letter-spacing:2px;">SAVE PRODUCT CHANGES</button>
         </form>
     </div>
 </div>
+
+<!-- Orders Modal -->
+<div id="orders-modal" class="modal">
+    <div class="modal-content glass-card" style="max-width: 900px;">
+        <span class="close" onclick="closeOrders()">&times;</span>
+        <h3 style="margin-bottom: 20px;">Recent Orders</h3>
+        <div id="orders-list"></div>
+    </div>
+    </div>
+<!-- End Orders Modal -->
 
 <div id="toast" class="toast">Saved successfully!</div>
 
@@ -415,6 +483,9 @@
     function initFirebase() {
         if (!firebase.apps.length) {
             firebase.initializeApp(FIREBASE_CONFIG);
+            if (typeof firebase.analytics === 'function') {
+                firebase.analytics();
+            }
         }
         db = firebase.firestore();
     }
@@ -459,6 +530,7 @@
         }
         
         await fetchProducts();
+        subscribeOrders();
     }
 
     async function fetchProducts() {
@@ -488,29 +560,138 @@
         list.innerHTML = '';
         
         products.forEach(p => {
-            const div = document.createElement('div');
-            div.className = 'admin-card';
-            // Get first variant image if img is not set
-            const displayImg = p.img || (p.variants && p.variants[0] ? p.variants[0].image : '');
-            
-            div.innerHTML = `
-                <img src="${displayImg}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+            const displayImg = p.variants && p.variants.length > 0 ? p.variants[0].image : (p.img || 'https://via.placeholder.com/300');
+            const card = document.createElement('div');
+            card.className = 'admin-card glass-card';
+            if (p.hidden) card.style.opacity = '0.6';
+            card.innerHTML = `
+                <img src="${displayImg}" alt="${p.name}">
                 <div class="card-body">
-                    <h3>${p.name}</h3>
-                    <p>
-                        ${p.hidden ? '<span style="color:#ff8888; font-weight:bold;">[HIDDEN]</span> ' : ''}
-                        ₦${Number(p.price).toLocaleString()}
-                    </p>
+                    <div style="display:flex; justify-content:space-between; align-items:start;">
+                        <h3>${p.name}</h3>
+                        ${p.hidden ? '<span style="font-size:0.6rem; background:rgba(255,0,0,0.2); color:#ff4444; border:1px solid #ff4444; padding:2px 6px; border-radius:4px; font-weight:bold;">HIDDEN</span>' : ''}
+                    </div>
+                    <p>${p.category || 'NO CATEGORY'} ${p.type ? `• ${p.type}` : ''}</p>
+                    <div style="font-weight:bold; color:var(--text-gold); margin-bottom:15px; font-size:1.1rem;">
+                        ₦${(p.sale_price || p.price).toLocaleString()}
+                        ${p.sale_price ? `<span style="text-decoration:line-through; font-size:0.8rem; opacity:0.5; margin-left:10px;">₦${p.price.toLocaleString()}</span>` : ''}
+                    </div>
                     <div class="card-actions">
                         <button class="btn-card btn-edit" onclick="editProduct('${p.id}')">EDIT</button>
                         <button class="btn-card btn-delete" onclick="deleteProduct('${p.id}')">DELETE</button>
                     </div>
                 </div>
             `;
-            list.appendChild(div);
+            list.appendChild(card);
         });
     }
 
+    // --- ORDERS SUBSCRIPTION ---
+    let ordersInitialized = false;
+    function subscribeOrders() {
+        try {
+            db.collection('orders').orderBy('createdAt', 'desc').limit(20)
+              .onSnapshot((snapshot) => {
+                  if (!ordersInitialized) {
+                      ordersInitialized = true;
+                      return; // Skip initial batch
+                  }
+                  snapshot.docChanges().forEach((change) => {
+                      if (change.type === 'added') {
+                          const data = change.doc.data();
+                          const count = (data.items || []).reduce((n, i) => n + (i.qty || 1), 0);
+                          showToast(`NEW ORDER: ${count} item(s) • ₦${(data.total || 0).toLocaleString()}`);
+                      }
+                  });
+              });
+        } catch (e) {
+            console.error('Order subscription failed', e);
+        }
+    }
+
+    // --- ORDERS MANAGEMENT ---
+    async function openOrders() {
+        document.getElementById('orders-modal').style.display = 'flex';
+        await renderOrdersModal();
+    }
+    function closeOrders() {
+        document.getElementById('orders-modal').style.display = 'none';
+    }
+    async function renderOrdersModal() {
+        try {
+            const listEl = document.getElementById('orders-list');
+            listEl.innerHTML = '<p style="opacity:0.6;">Loading...</p>';
+            const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').limit(50).get();
+            const orders = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            if (orders.length === 0) {
+                listEl.innerHTML = '<p style="opacity:0.6;">No orders yet.</p>';
+                return;
+            }
+            listEl.innerHTML = '';
+            orders.forEach(o => {
+                const div = document.createElement('div');
+                div.className = 'glass-card';
+                div.style.padding = '16px';
+                div.style.marginBottom = '12px';
+                const itemsCount = (o.items || []).reduce((n, i) => n + (i.qty || 1), 0);
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                        <div style="flex:1;">
+                            <div style="font-weight:bold; color:var(--text-gold);">₦${(o.total || 0).toLocaleString()} • ${itemsCount} item(s)</div>
+                            <div style="opacity:0.7; font-size:0.85rem;">${o.email || 'Unknown Email'} • Ref: ${o.reference || 'N/A'}</div>
+                            <div style="opacity:0.7; font-size:0.85rem;">Status: ${o.status || 'paid'}</div>
+                        </div>
+                        <div style="flex:1;">
+                            <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                <input type="checkbox" ${o.status === 'received' ? 'checked' : ''} onchange="markReceived('${o.id}', '${o.email || ''}', this.checked)">
+                                <span>Order Received / Processing</span>
+                            </label>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <input type="text" placeholder="Tracking Code" value="${o.trackingCode || ''}" id="trk-${o.id}" style="margin:0;">
+                                <button class="btn-action" onclick="saveTracking('${o.id}', '${o.email || ''}')">Save & Notify</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                listEl.appendChild(div);
+            });
+        } catch (e) {
+            console.error(e);
+            alert('Failed to load orders');
+        }
+    }
+    async function markReceived(orderId, email, checked) {
+        try {
+            await db.collection('orders').doc(orderId).update({ status: checked ? 'received' : 'paid', updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+            showToast(checked ? 'Marked as received' : 'Reverted to paid');
+            if (checked && email) notifyCustomer(email, 'Order received. We are processing your preorder.');
+        } catch (e) {
+            console.error(e);
+            alert('Failed to update status');
+        }
+    }
+    async function saveTracking(orderId, email) {
+        const input = document.getElementById('trk-' + orderId);
+        const code = input ? input.value.trim() : '';
+        if (!code) {
+            alert('Enter tracking code');
+            return;
+        }
+        try {
+            await db.collection('orders').doc(orderId).update({ trackingCode: code, status: 'shipped', updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+            showToast('Tracking code saved');
+            if (email) notifyCustomer(email, `Your order has shipped. Tracking code: ${code}`);
+        } catch (e) {
+            console.error(e);
+            alert('Failed to save tracking code');
+        }
+    }
+    function notifyCustomer(email, message) {
+        const subject = encodeURIComponent('RARE ROOT Order Update');
+        const body = encodeURIComponent(message);
+        const url = `mailto:${email}?subject=${subject}&body=${body}`;
+        window.location.href = url;
+    }
     // CRUD Operations
     function openModal() {
         document.getElementById('product-form').reset();
@@ -553,6 +734,7 @@
             variants: variants,
             img: variants[0] ? variants[0].image : '', 
             hidden: document.getElementById('p-hidden').checked,
+            stock: document.getElementById('p-stock').value,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
@@ -589,6 +771,7 @@
         document.getElementById('p-type').value = p.type || '';
         document.getElementById('p-sizes').value = (p.sizes || []).join(', ');
         document.getElementById('p-hidden').checked = p.hidden || false;
+        document.getElementById('p-stock').value = p.stock || 'In Stock';
 
         const container = document.getElementById('variants-container');
         container.innerHTML = '';
