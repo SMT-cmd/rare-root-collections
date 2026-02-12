@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RARE ROOT | Prestige</title>
+    <meta name="description" content="RARE ROOT — premium Nigerian streetwear. Prestige in every thread. Explore collections, preorder, and track orders.">
+    <meta property="og:title" content="RARE ROOT — Prestige Streetwear">
+    <meta property="og:description" content="High-performance apparel for the disciplined. Explore The Exchange, Kinetic, and Urban Archive.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://files.fm/thumb.php?i=y628qspy4s">
+    <meta property="og:url" content="https://yourdomain.example/">
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -131,7 +137,7 @@ nav {
 }
 
 .nav-logo-img {
-    height: 80px;
+    height: 64px;
     width: auto;
     display: block;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -150,8 +156,8 @@ nav {
 .cart-icon {
     position: relative;
     background: rgba(255, 255, 255, 0.05);
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -211,7 +217,7 @@ nav {
 
 .hero-title {
     font-family: var(--font-head);
-    font-size: 3.5rem; /* Reduced from 5rem */
+    font-size: 3.2rem;
     color: var(--text-gold);
     margin: 0 0 20px;
     line-height: 1.1;
@@ -330,8 +336,8 @@ nav {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
     margin-bottom: 80px;
 }
 
@@ -385,6 +391,18 @@ nav {
     top: 10px;
     left: 10px;
     background: #ff4757;
+    color: white;
+    padding: 4px 8px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    border-radius: 6px;
+    z-index: 2;
+}
+.stock-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(178, 58, 58, 0.9);
     color: white;
     padding: 4px 8px;
     font-size: 0.65rem;
@@ -589,16 +607,16 @@ footer {
 
 .menu-drawer {
     left: 0;
-    width: 320px;
-    max-width: 75vw;
+    width: 300px;
+    max-width: 72vw;
     transform: translateX(-100%);
     border-right: 1px solid var(--glass-border);
 }
 
 .cart-drawer {
     right: 0;
-    width: 380px;
-    max-width: 85vw;
+    width: 340px;
+    max-width: 82vw;
     transform: translateX(100%);
     border-left: 1px solid var(--glass-border);
     border-right: none;
@@ -1317,6 +1335,7 @@ footer {
             <li><a href="#kinetic-grid" onclick="toggleMenu()">Kinetic</a></li>
             <li><a href="#urban-grid" onclick="toggleMenu()">Urban Archive</a></li>
             <li><a href="#footer" onclick="toggleMenu()">Contact</a></li>
+            <li><a href="#" onclick="openTrackModal(); toggleMenu()">Track Order</a></li>
         </ul>
     </div>
 
@@ -1368,6 +1387,23 @@ footer {
         </div>
     </div>
 
+    <!-- Track Order Modal -->
+    <div id="track-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeTrackModal()">&times;</span>
+            <div class="modal-body">
+                <h3 style="margin-bottom:10px; color: var(--text-gold);">Track Your Order</h3>
+                <p style="opacity:0.7; font-size:0.9rem; margin-bottom:15px;">Enter your tracking code or order reference (RR-...).</p>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                    <input type="text" id="track-code" placeholder="Tracking Code">
+                    <input type="text" id="track-ref" placeholder="Order Reference (RR-...)">
+                </div>
+                <button class="btn-checkout" onclick="findOrder()">Find Order</button>
+                <div id="track-result" style="margin-top:15px;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Script removed for GitHub Pages compatibility -->
     <script>
 // ------------------------------------------------
@@ -1378,6 +1414,15 @@ let cart = [];
 let currentModalProduct = null;
 let db;
 const PAYSTACK_PUBLIC_KEY = 'pk_test_74a74bdf05a89708936bc958ca3ddadf8ab3b3ef'; 
+function saveCart() {
+    try { localStorage.setItem('rr_cart', JSON.stringify(cart)); } catch (e) {}
+}
+function loadCart() {
+    try { 
+        const s = localStorage.getItem('rr_cart'); 
+        if (s) { cart = JSON.parse(s) || []; updateCartUI(); }
+    } catch (e) {}
+}
 
 // Firebase Configuration (Replace with your actual keys from Firebase Console)
 const FIREBASE_CONFIG = { 
@@ -1473,8 +1518,7 @@ function renderCategory(categoryName, elementId) {
     if (!container) return; 
     
     // Filter by category and ensure not hidden
-    // Normalize string comparison to avoid case/space issues
-    const items = products.filter(p => p.category.trim() === categoryName.trim() && !p.hidden);
+    const items = products.filter(p => ((p.category || '').toLowerCase().trim() === categoryName.toLowerCase().trim()) && !p.hidden);
     
     if (items.length === 0) {
         // Optional: Hide section if empty
@@ -1498,10 +1542,13 @@ function renderCategory(categoryName, elementId) {
         const discountBadge = isSale 
             ? `<span class="discount-badge">-${Math.round(((product.price - product.sale_price) / product.price) * 100)}%</span>` 
             : '';
+        const stockBadge = (product.stock && product.stock.toLowerCase() === 'out of stock') 
+            ? `<span class="stock-badge">OUT OF STOCK</span>` 
+            : '';
 
         card.innerHTML = `
             <div class="product-image-container">
-                ${discountBadge}
+                ${discountBadge}${stockBadge}
                 <img src="${product.img}" alt="${product.name}" loading="lazy">
                 <button class="view-options-btn">
                     <i class="fas fa-shopping-cart"></i> VIEW OPTIONS
@@ -1534,6 +1581,7 @@ function openProductModal(id) {
         priceDisplay = `<span class="original-price" style="font-size: 1rem; color: rgba(255,255,255,0.4);">₦${product.price.toLocaleString()}</span> ₦${product.sale_price.toLocaleString()}`;
         actualPrice = product.sale_price;
     }
+    const isOut = (product.stock || '').toLowerCase() === 'out of stock';
 
     // Generate Size Options
     let sizeOptions = product.sizes ? product.sizes.map(s => `<option value="${s}">${s}</option>`).join('') : '<option>One Size</option>';
@@ -1605,9 +1653,9 @@ function openProductModal(id) {
                 </select>
             </div>
 
-            <button class="btn-add-modal" onclick="addToCartFromModal()">
-                Add to Bag - ₦${actualPrice.toLocaleString()}
-            </button>
+            ${isOut 
+                ? `<button class="btn-add-modal" disabled style="opacity:0.6; pointer-events:none;">Out of Stock</button>` 
+                : `<button class="btn-add-modal" onclick="addToCartFromModal()">Add to Bag - ₦${actualPrice.toLocaleString()}</button>`}
         </div>
     `;
 
@@ -1695,6 +1743,49 @@ function closeModal() {
     currentModalProduct = null;
 }
 
+function openTrackModal() {
+    document.getElementById('track-modal').style.display = "block";
+}
+function closeTrackModal() {
+    document.getElementById('track-modal').style.display = "none";
+}
+async function findOrder() {
+    try {
+        initFirebase();
+        const code = (document.getElementById('track-code').value || '').trim();
+        const ref = (document.getElementById('track-ref').value || '').trim();
+        const resultEl = document.getElementById('track-result');
+        resultEl.innerHTML = '<p style="opacity:0.6;">Searching...</p>';
+        let q;
+        if (code) {
+            q = await db.collection('orders').where('trackingCode', '==', code).limit(1).get();
+        } else if (ref) {
+            q = await db.collection('orders').where('reference', '==', ref).limit(1).get();
+        } else {
+            resultEl.innerHTML = '<p style="opacity:0.6;">Enter tracking code or reference.</p>';
+            return;
+        }
+        if (q.empty) {
+            resultEl.innerHTML = '<p style="opacity:0.6;">No order found. Check your code/reference.</p>';
+            return;
+        }
+        const doc = q.docs[0];
+        const o = { id: doc.id, ...doc.data() };
+        const itemsList = (o.items || []).map(i => `${i.name} • ${i.size}/${i.color} x${i.qty || 1}`).join('<br>');
+        resultEl.innerHTML = `
+            <div class="glass-card" style="padding:12px;">
+                <div style="font-weight:bold; color:var(--text-gold);">Status: ${o.status || 'paid'}</div>
+                <div style="margin-top:8px; font-size:0.9rem; opacity:0.8;">Total: ₦${(o.total || 0).toLocaleString()}</div>
+                ${o.trackingCode ? `<div style="margin-top:8px;">Tracking Code: <strong>${o.trackingCode}</strong></div>` : ''}
+                <div style="margin-top:8px; font-size:0.85rem; opacity:0.8;">Items:<br>${itemsList}</div>
+            </div>
+        `;
+    } catch (e) {
+        console.error(e);
+        alert('Failed to track order. Try again.');
+    }
+}
+
 // Close modal when clicking outside
 window.onclick = function(event) {
     const modal = document.getElementById('product-modal');
@@ -1737,6 +1828,7 @@ function addToCartFromModal() {
     }
 
     updateCartUI();
+    saveCart();
     closeModal();
     showToast(`Added ${currentModalProduct.name} to bag`);
     toggleCart();
@@ -1804,6 +1896,7 @@ function updateQty(cartId, delta) {
             removeFromCart(cartId);
         } else {
             updateCartUI();
+            saveCart();
         }
     }
 }
@@ -1865,9 +1958,12 @@ function checkoutPaystack() {
             },
             callback: function (response) {
                 showToast("Payment successful. Ref: " + response.reference);
+                recordOrder(email, totalAmount, response.reference);
                 cart = [];
                 updateCartUI();
                 toggleCart();
+                saveCart();
+                try { localStorage.setItem('rr_email', email); } catch (e) {}
             },
             onClose: function () {
                 showToast("Payment window closed.");
@@ -1879,9 +1975,46 @@ function checkoutPaystack() {
         alert("Unable to initialize Paystack. Please ensure the public key is set.");
     }
 }
+
+function recordOrder(email, totalAmount, reference) {
+    try {
+        initFirebase();
+        const order = {
+            email,
+            total: totalAmount,
+            reference,
+            status: 'paid',
+            items: cart.map(i => ({
+                id: i.id,
+                name: i.name,
+                size: i.selectedSize,
+                color: i.selectedColor,
+                qty: i.quantity || 1,
+                unit_price: i.finalPrice
+            })),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        db.collection('orders').add(order).then(() => {
+            console.log('Order recorded');
+        }).catch(err => {
+            console.error('Failed to record order', err);
+        });
+    } catch (err) {
+        console.error('Record order error', err);
+    }
+}
+
+function evaluateCheckoutState() {
+    const btn = document.querySelector('.btn-checkout');
+    const emailInput = document.getElementById('checkout-email');
+    const validEmail = emailInput && emailInput.value.includes('@');
+    const hasItems = cart.length > 0;
+    if (btn) btn.disabled = !(validEmail && hasItems);
+}
 function removeFromCart(cartId) {
     cart = cart.filter(item => item.cartId !== cartId);
     updateCartUI();
+    saveCart();
 }
 
 function toggleCart() {
@@ -2041,7 +2174,11 @@ function checkout() {
 // INITIALIZATION
 // ------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+    loadCart();
     fetchProducts();
+    const savedEmail = (() => { try { return localStorage.getItem('rr_email') || ''; } catch (e) { return ''; } })();
+    const emailInput = document.getElementById('checkout-email');
+    if (emailInput && savedEmail) { emailInput.value = savedEmail; }
     
     // Initialize Netlify Identity if present
     // (Disabled for GitHub Pages compatibility)
