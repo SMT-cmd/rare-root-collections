@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Press | RARE ROOT - Media & Press</title>
+    <meta name="description" content="Discover what the media is saying about RARE ROOT. Press coverage, brand mentions, and media resources.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #1a1210;
+            --bg-wine: #2d1f1a;
+            --bg-card: #231815;
+            --text-gold: #d4af37;
+            --text-gold-light: #e8d68b;
+            --text-cream: #f5f0e8;
+            --text-muted: #a89a8a;
+            --accent-wine: #4a2c2a;
+            --glass-bg: rgba(45, 31, 26, 0.85);
+            --glass-border: rgba(212, 175, 55, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(26, 18, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-gold);
+            text-decoration: none;
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--text-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-actions button {
+            background: none;
+            border: none;
+            color: var(--text-cream);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .header-actions button:hover {
+            color: var(--text-gold);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-cream);
+        }
+
+        /* Hero Section */
+        .page-hero {
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-wine) 50%, var(--accent-wine) 100%);
+            position: relative;
+        }
+
+        .page-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+        }
+
+        .page-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            color: var(--text-gold);
+            margin-bottom: 1rem;
+        }
+
+        .page-hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--text-gold);
+        }
+
+        .breadcrumb span {
+            color: var(--text-gold);
+        }
+
+        /* Featured Section */
+        .featured-section {
+            padding: 4rem 2rem;
+            background: var(--bg-wine);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-gold);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .featured-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--text-gold);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.1);
+        }
+
+        .featured-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text-gold);
+            margin-bottom: 1rem;
+        }
+
+        .featured-quote {
+            font-style: italic;
+            color: var(--text-cream);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .featured-card a {
+            color: var(--text-gold);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .featured-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Press Mentions */
+        .press-section {
+            padding: 4rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .press-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .press-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .press-item:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .press-date {
+            flex-shrink: 0;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .press-date .day {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-gold);
+            line-height: 1;
+        }
+
+        .press-date .month {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .press-content {
+            flex: 1;
+        }
+
+        .press-content h3 {
+            font-size: 1.1rem;
+            color: var(--text-cream);
+            margin-bottom: 0.5rem;
+        }
+
+        .press-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .press-source {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-gold);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Media Kit Section */
+        .mediakit-section {
+            padding: 4rem 2rem;
+            background: var(--bg-wine);
+        }
+
+        .mediakit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .mediakit-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .mediakit-card:hover {
+            border-color: var(--text-gold);
+        }
+
+        .mediakit-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: var(--text-gold);
+        }
+
+        .mediakit-card h3 {
+            font-size: 1.1rem;
+            color: var(--text-cream);
+            margin-bottom: 0.5rem;
+        }
+
+        .mediakit-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .mediakit-btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--text-gold);
+            border-radius: 6px;
+            color: var(--text-gold);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .mediakit-btn:hover {
+            background: var(--text-gold);
+            color: var(--bg-dark);
+        }
+
+        /* Contact Section */
+        .press-contact {
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .press-contact h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-gold);
+            margin-bottom: 1rem;
+        }
+
+        .press-contact p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .contact-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-cream);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-email:hover {
+            border-color: var(--text-gold);
+            color: var(--text-gold);
+        }
+
+        .contact-email i {
+            color: var(--text-gold);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            border-top: 1px solid var(--glass-border);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h4 {
+            color: var(--text-gold);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--text-gold);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-cream);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--text-gold);
+            color: var(--bg-dark);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            z-index: 1001;
+            padding: 2rem;
+            transition: left 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-cream);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            margin-top: 3rem;
+        }
+
+        .mobile-menu li {
+            margin-bottom: 1.5rem;
+        }
+
+        .mobile-menu a {
+            color: var(--text-cream);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .press-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .press-date {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .press-date .day {
+                font-size: 1.5rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">RARE ROOT</a>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../index.html#shop">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="press.html" class="active">Press</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <button onclick="window.location.href='../index.html#search'" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button onclick="window.location.href='../index.html#wishlist'" aria-label="Wishlist">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <button onclick="window.location.href='../index.html#cart'" aria-label="Cart">
+                    <i class="fas fa-shopping-bag"></i>
+                </button>
+            </div>
+            
+            <div class="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#shop">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="press.html">Press</a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- Hero Section -->
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <h1>Press & Media</h1>
+            <p>Discover what the world is saying about RARE ROOT and access our media resources.</p>
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>/</span>
+                <span>Press</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Section -->
+    <section class="featured-section">
+        <div class="section-header">
+            <h2>Featured In</h2>
+            <p>RARE ROOT has been recognized by leading publications worldwide.</p>
+        </div>
+        
+        <div class="featured-grid">
+            <div class="featured-card">
+                <div class="featured-logo">Vogue Africa</div>
+                <p class="featured-quote">"RARE ROOT is redefining Nigerian streetwear with a perfect blend of heritage and contemporary design. A brand to watch."</p>
+                <a href="#" onclick="alert('External link coming soon'); return false;">Read Article <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="featured-card">
+                <div class="featured-logo">Hypebeast</div>
+                <p class="featured-quote">"The Lagos-based label is putting African streetwear on the global map with their bold designs and authentic storytelling."</p>
+                <a href="#" onclick="alert('External link coming soon'); return false;">Read Article <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="featured-card">
+                <div class="featured-logo">GQ South Africa</div>
+                <p class="featured-quote">"From Lagos to London, RARE ROOT's pieces are becoming staples in the wardrobes of fashion-forward individuals across continents."</p>
+                <a href="#" onclick="alert('External link coming soon'); return false;">Read Article <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press Mentions -->
+    <section class="press-section">
+        <div class="section-header">
+            <h2>Latest Press</h2>
+            <p>Recent coverage and mentions from around the world.</p>
+        </div>
+        
+        <div class="press-list">
+            <div class="press-item">
+                <div class="press-date">
+                    <div class="day">15</div>
+                    <div class="month">Jan 2024</div>
+                </div>
+                <div class="press-content">
+                    <h3>RARE ROOT Opens First International Store in London</h3>
+                    <p>The Nigerian streetwear brand continues its global expansion with a flagship store in Shoreditch, marking a significant milestone for African fashion.</p>
+                    <span class="press-source"><i class="fas fa-newspaper"></i> The Guardian Nigeria</span>
+                </div>
+            </div>
+            
+            <div class="press-item">
+                <div class="press-date">
+                    <div class="day">08</div>
+                    <div class="month">Dec 2023</div>
+                </div>
+                <div class="press-content">
+                    <h3>Best Streetwear Brands of 2023</h3>
+                    <p>RARE ROOT named among the top 10 streetwear brands globally, recognized for innovative designs and cultural impact.</p>
+                    <span class="press-source"><i class="fas fa-newspaper"></i> Complex</span>
+                </div>
+            </div>
+            
+            <div class="press-item">
+                <div class="press-date">
+                    <div class="day">22</div>
+                    <div class="month">Nov 2023</div>
+                </div>
+                <div class="press-content">
+                    <h3>Sustainable Fashion: How RARE ROOT is Leading the Way</h3>
+                    <p>An in-depth look at the brand's commitment to eco-friendly practices and ethical manufacturing in Africa.</p>
+                    <span class="press-source"><i class="fas fa-newspaper"></i> Elle Decoration</span>
+                </div>
+            </div>
+            
+            <div class="press-item">
+                <div class="press-date">
+                    <div class="day">05</div>
+                    <div class="month">Oct 2023</div>
+                </div>
+                <div class="press-content">
+                    <h3>Collaboration with Burna Boy Sells Out in 24 Hours</h3>
+                    <p>The limited edition capsule collection with the Grammy-winning artist breaks sales records for the brand.</p>
+                    <span class="press-source"><i class="fas fa-newspaper"></i> Billboard Africa</span>
+                </div>
+            </div>
+            
+            <div class="press-item">
+                <div class="press-date">
+                    <div class="day">18</div>
+                    <div class="month">Sep 2023</div>
+                </div>
+                <div class="press-content">
+                    <h3>Afrobeats and Fashion: The Cultural Connection</h3>
+                    <p>Exploring how RARE ROOT and other Nigerian brands are riding the wave of Afrobeats global success.</p>
+                    <span class="press-source"><i class="fas fa-newspaper"></i> CNN Africa</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Media Kit Section -->
+    <section class="mediakit-section">
+        <div class="section-header">
+            <h2>Media Kit</h2>
+            <p>Download official brand assets for press and media use.</p>
+        </div>
+        
+        <div class="mediakit-grid">
+            <div class="mediakit-card">
+                <div class="mediakit-icon"><i class="fas fa-image"></i></div>
+                <h3>Brand Logos</h3>
+                <p>High-resolution logos in various formats (PNG, SVG, EPS)</p>
+                <a href="#" class="mediakit-btn" onclick="alert('Download coming soon'); return false;">Download</a>
+            </div>
+            
+            <div class="mediakit-card">
+                <div class="mediakit-icon"><i class="fas fa-camera"></i></div>
+                <h3>Product Images</h3>
+                <p>Professional product photography and lookbook images</p>
+                <a href="#" class="mediakit-btn" onclick="alert('Download coming soon'); return false;">Download</a>
+            </div>
+            
+            <div class="mediakit-card">
+                <div class="mediakit-icon"><i class="fas fa-file-alt"></i></div>
+                <h3>Brand Guidelines</h3>
+                <p>Complete brand guidelines including colors, fonts, and usage</p>
+                <a href="#" class="mediakit-btn" onclick="alert('Download coming soon'); return false;">Download</a>
+            </div>
+            
+            <div class="mediakit-card">
+                <div class="mediakit-icon"><i class="fas fa-user"></i></div>
+                <h3>Founder Bio</h3>
+                <p>Executive biography and high-res headshots</p>
+                <a href="#" class="mediakit-btn" onclick="alert('Download coming soon'); return false;">Download</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press Contact -->
+    <section class="press-contact">
+        <h2>Press Inquiries</h2>
+        <p>For media inquiries, interview requests, or partnership opportunities, please contact our press team.</p>
+        <a href="mailto:press@rareroot.com" class="contact-email">
+            <i class="fas fa-envelope"></i>
+            press@rareroot.com
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="../index.html#new-arrivals">New Arrivals</a></li>
+                    <li><a href="../index.html#bestsellers">Bestsellers</a></li>
+                    <li><a href="../index.html#tops">Tops</a></li>
+                    <li><a href="../index.html#bottoms">Bottoms</a></li>
+                    <li><a href="../index.html#accessories">Accessories</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="#" onclick="alert('Shipping info coming soon'); return false;">Shipping</a></li>
+                    <li><a href="#" onclick="alert('Returns info coming soon'); return false;">Returns</a></li>
+                    <li><a href="#" onclick="alert('Size guide coming soon'); return false;">Size Guide</a></li>
+                    <li><a href="#" onclick="alert('Contact form coming soon'); return false;">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="press.html">Press</a></li>
+                    <li><a href="#" onclick="alert('Careers page coming soon'); return false;">Careers</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Follow us for exclusive drops and behind-the-scenes content.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 RARE ROOT. All rights reserved. Made with pride in Nigeria.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
