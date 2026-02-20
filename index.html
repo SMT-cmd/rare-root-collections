@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RARE ROOT | Prestige</title>
     <meta name="description" content="RARE ROOT — premium Nigerian streetwear. Prestige in every thread. Explore collections, preorder, and track orders.">
     <meta property="og:title" content="RARE ROOT — Prestige Streetwear">
@@ -34,6 +34,10 @@
     --glass-border: rgba(255, 255, 255, 0.1);
     --font-head: 'Cinzel', serif;
     --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .glass-card {
@@ -70,6 +74,8 @@ body {
     color: var(--text-cream);
     overflow-x: hidden;
     line-height: 1.6;
+    min-height: 100vh;
+    width: 100%;
 }
 
 /* -------------------------------------------------------
@@ -93,37 +99,42 @@ body {
 }
 
 /* -------------------------------------------------------
-   HEADER & MENU (MODERN GLASS)
+   HEADER & MENU (MODERN GLASS) - FIXED SIZING
    ------------------------------------------------------- */
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
+    padding: 12px 20px;
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(58, 42, 34, 0.7);
+    background: rgba(58, 42, 34, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     transition: all 0.3s ease;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 .menu-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
-    font-size: 1.2rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: 1.1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 }
 
 .menu-btn:hover {
@@ -132,13 +143,17 @@ nav {
 }
 
 .logo {
-    display: block;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0 15px;
 }
 
 .nav-logo-img {
-    height: 64px;
+    height: 50px;
     width: auto;
+    max-width: 100%;
     display: block;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -150,21 +165,51 @@ nav {
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box input {
+    width: 160px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(224, 192, 151, 0.2);
+    border-radius: 8px;
+    color: var(--text-cream);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: var(--text-gold);
+    width: 200px;
+}
+
+.search-box input::placeholder {
+    color: rgba(244, 241, 234, 0.5);
 }
 
 .cart-icon {
     position: relative;
     background: rgba(255, 255, 255, 0.05);
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
 .cart-icon:hover {
@@ -173,25 +218,25 @@ nav {
 }
 
 .cart-icon i {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--text-gold);
 }
 
 .cart-count {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -6px;
+    right: -6px;
     background: #ff4757;
     color: white;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 800;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 2px solid #0a0e14;
+    border: 2px solid var(--bg-dark);
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
@@ -201,9 +246,12 @@ nav {
 .hero {
     position: relative;
     text-align: center;
-    padding: 160px 20px 100px;
+    padding: 140px 20px 80px;
     background: radial-gradient(circle at center, rgba(108, 76, 55, 0.45) 0%, var(--bg-dark) 70%);
     overflow: hidden;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 .hero::before {
@@ -217,25 +265,25 @@ nav {
 
 .hero-title {
     font-family: var(--font-head);
-    font-size: 3.2rem;
+    font-size: clamp(2rem, 8vw, 3.2rem);
     color: var(--text-gold);
-    margin: 0 0 20px;
+    margin: 0 0 15px;
     line-height: 1.1;
     text-transform: uppercase;
-    letter-spacing: 2px; /* More breathable */
+    letter-spacing: 2px;
     text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    opacity: 0; /* Animated by JS */
+    opacity: 0;
     animation: fadeInUp 1s forwards 0.2s;
 }
 
 .hero-subtitle {
-    font-size: 1rem;
-    letter-spacing: 4px;
+    font-size: clamp(0.75rem, 2vw, 1rem);
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--text-cream);
     opacity: 0;
     font-weight: 300;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     animation: fadeInUp 1s forwards 0.5s;
 }
 
@@ -243,9 +291,9 @@ nav {
     background: transparent;
     border: 1px solid var(--text-gold);
     color: var(--text-gold);
-    padding: 15px 40px;
+    padding: 14px 32px;
     font-family: var(--font-body);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -253,6 +301,7 @@ nav {
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     opacity: 0;
     animation: fadeInUp 1s forwards 0.8s;
+    border-radius: 4px;
 }
 
 .btn-hero:hover {
@@ -271,15 +320,17 @@ nav {
    BRAND IDENTITY
    ------------------------------------------------------- */
 .brand-identity {
-    padding: 80px 20px;
+    padding: 60px 20px;
     text-align: center;
-    max-width: 900px;
+    max-width: 800px;
     margin: 0 auto;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .brand-text {
-    font-size: 1.25rem;
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
     line-height: 1.8;
     color: var(--text-cream);
     opacity: 0.9;
@@ -292,16 +343,18 @@ nav {
 }
 
 /* -------------------------------------------------------
-   LAYOUT & GRID
+   LAYOUT & GRID - FIXED MAX WIDTH
    ------------------------------------------------------- */
 .container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .collection-header {
-    margin: 80px 0 40px;
+    margin: 60px 0 30px;
     text-align: center;
     position: relative;
 }
@@ -312,13 +365,13 @@ nav {
     width: 40px;
     height: 1px;
     background: var(--text-gold);
-    margin: 15px auto 0;
+    margin: 12px auto 0;
     opacity: 0.5;
 }
 
 .category-title {
     font-family: var(--font-head);
-    font-size: 2.2rem; /* Smaller, more elegant */
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
     color: var(--text-gold);
     margin: 0;
     letter-spacing: 2px;
@@ -327,18 +380,19 @@ nav {
 
 .category-subtitle {
     font-family: var(--font-body);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     opacity: 0.6;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 80px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 60px;
+    width: 100%;
 }
 
 /* -------------------------------------------------------
@@ -349,19 +403,19 @@ nav {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     position: relative;
-    padding: 12px;
+    padding: 10px;
 }
 
 .product-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     border-color: var(--text-gold);
     background: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
 }
 
 .product-image-container {
@@ -371,8 +425,8 @@ nav {
     overflow: hidden;
     position: relative;
     background: #33251f;
-    border-radius: 12px;
-    margin-bottom: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .product-image-container img {
@@ -388,24 +442,24 @@ nav {
 
 .discount-badge {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 8px;
+    left: 8px;
     background: #ff4757;
     color: white;
     padding: 4px 8px;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 800;
     border-radius: 6px;
     z-index: 2;
 }
 .stock-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 8px;
+    right: 8px;
     background: rgba(178, 58, 58, 0.9);
     color: white;
     padding: 4px 8px;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 800;
     border-radius: 6px;
     z-index: 2;
@@ -417,43 +471,45 @@ nav {
 
 .product-info h3 {
     font-family: var(--font-body);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #fff;
-    margin: 0 0 6px 0;
+    margin: 0 0 5px 0;
     font-weight: 500;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-info .price {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-gold);
-    font-weight: 800;
+    font-weight: 700;
     font-family: var(--font-body);
     margin: 0;
 }
 
 .product-info .original-price {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: rgba(255,255,255,0.3);
     text-decoration: line-through;
-    margin-right: 8px;
+    margin-right: 6px;
 }
 
-/* Add to Cart Button on Card (matches screenshot) */
 .view-options-btn {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 15px;
+    right: 15px;
     background: var(--text-gold);
     color: #000;
-    padding: 10px 18px;
+    padding: 8px 14px;
     border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 800;
+    font-size: 0.75rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.3s ease;
@@ -467,7 +523,7 @@ nav {
 }
 
 .view-options-btn i {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 /* -------------------------------------------------------
@@ -475,42 +531,48 @@ nav {
    ------------------------------------------------------- */
 .newsletter-section {
     background: linear-gradient(to bottom, var(--bg-dark), #110a09);
-    padding: 120px 20px;
+    padding: 80px 20px;
     text-align: center;
     border-top: 1px solid rgba(224, 192, 151, 0.05);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .newsletter-content h3 {
     font-family: var(--font-head);
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
     color: var(--text-gold);
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .newsletter-content p {
     color: rgba(244, 241, 234, 0.6);
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    font-size: 0.95rem;
 }
 
 .newsletter-form {
     display: flex;
     justify-content: center;
     gap: 0;
-    max-width: 500px;
+    max-width: 450px;
     margin: 0 auto;
     position: relative;
+    flex-wrap: wrap;
 }
 
 .newsletter-form input {
-    padding: 18px 25px;
+    padding: 16px 20px;
     width: 100%;
+    max-width: 300px;
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.1);
     color: var(--text-cream);
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: 0.95rem;
     border-radius: 4px 0 0 4px;
     transition: border-color 0.3s;
+    flex: 1;
 }
 
 .newsletter-form input:focus {
@@ -519,7 +581,7 @@ nav {
 }
 
 .newsletter-form button {
-    padding: 18px 30px;
+    padding: 16px 24px;
     background: var(--text-gold);
     border: none;
     color: var(--bg-dark);
@@ -528,6 +590,8 @@ nav {
     cursor: pointer;
     border-radius: 0 4px 4px 0;
     transition: background 0.3s;
+    font-size: 0.8rem;
+    white-space: nowrap;
 }
 
 .newsletter-form button:hover {
@@ -539,87 +603,88 @@ nav {
    ------------------------------------------------------- */
 footer {
     background: #110a09;
-    padding: 100px 40px 30px;
+    padding: 60px 20px 25px;
     border-top: 1px solid rgba(224, 192, 151, 0.1);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .footer-content {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 60px;
-    max-width: 1600px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 40px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
 .footer-logo {
-    height: 80px; /* Bigger footer logo */
-    margin-bottom: 20px;
+    height: 60px;
+    margin-bottom: 15px;
     opacity: 0.9;
 }
 
 .footer-col h4 {
     font-family: var(--font-head);
     color: var(--text-gold);
-    margin-bottom: 25px;
-    font-size: 1.1rem;
+    margin-bottom: 20px;
+    font-size: 1rem;
 }
 
 .footer-col a {
     display: block;
     color: rgba(244, 241, 234, 0.6);
     text-decoration: none;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
     transition: color 0.3s, transform 0.3s;
 }
 
 .footer-col a:hover {
     color: var(--text-gold);
-    transform: translateX(5px);
+    transform: translateX(3px);
 }
 
 .footer-bottom {
     text-align: center;
-    margin-top: 80px;
-    padding-top: 30px;
+    margin-top: 50px;
+    padding-top: 25px;
     border-top: 1px solid rgba(255,255,255,0.03);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: rgba(255,255,255,0.3);
 }
 
 /* -------------------------------------------------------
-   DRAWER SYSTEM (Menu & Cart)
+   DRAWER SYSTEM (Menu & Cart) - FIXED WIDTH
    ------------------------------------------------------- */
 .menu-drawer, .cart-drawer {
     position: fixed;
     top: 0;
     height: 100vh;
-    background: rgba(42, 32, 26, 0.92);
+    height: 100dvh;
+    background: rgba(42, 32, 26, 0.98);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    z-index: 1000;
+    z-index: 1001;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     box-shadow: 0 0 50px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--glass-border);
 }
 
 .menu-drawer {
     left: 0;
     width: 300px;
-    max-width: 72vw;
+    max-width: 85vw;
     transform: translateX(-100%);
     border-right: 1px solid var(--glass-border);
 }
 
 .cart-drawer {
     right: 0;
-    width: 340px;
-    max-width: 82vw;
+    width: 380px;
+    max-width: 90vw;
     transform: translateX(100%);
     border-left: 1px solid var(--glass-border);
-    border-right: none;
 }
 
 .menu-drawer.open, .cart-drawer.open {
@@ -627,7 +692,7 @@ footer {
 }
 
 .menu-header, .cart-header {
-    padding: 30px;
+    padding: 25px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -636,11 +701,11 @@ footer {
 
 .menu-title, .cart-title {
     font-family: var(--font-head);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--text-gold);
 }
 .cart-title img {
-    height: 28px;
+    height: 24px;
     filter: drop-shadow(0 0 8px rgba(224, 192, 151, 0.2));
 }
 
@@ -648,24 +713,31 @@ footer {
     background: none;
     border: none;
     color: var(--text-cream);
-    font-size: 2rem;
+    font-size: 1.8rem;
     cursor: pointer;
     line-height: 1;
     transition: color 0.3s;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .close-menu:hover, .close-cart:hover {
     color: var(--text-gold);
+    background: rgba(255,255,255,0.05);
 }
 
 .menu-links {
     list-style: none;
-    padding: 40px 30px;
+    padding: 30px 20px;
     margin: 0;
 }
 
 .menu-links li {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     opacity: 0;
     transform: translateX(-20px);
     transition: all 0.4s ease;
@@ -676,32 +748,34 @@ footer {
     transform: translateX(0);
 }
 
-/* Stagger animations for menu items */
 .menu-drawer.open .menu-links li:nth-child(1) { transition-delay: 0.1s; }
-.menu-drawer.open .menu-links li:nth-child(2) { transition-delay: 0.2s; }
-.menu-drawer.open .menu-links li:nth-child(3) { transition-delay: 0.3s; }
-.menu-drawer.open .menu-links li:nth-child(4) { transition-delay: 0.4s; }
-.menu-drawer.open .menu-links li:nth-child(5) { transition-delay: 0.5s; }
+.menu-drawer.open .menu-links li:nth-child(2) { transition-delay: 0.15s; }
+.menu-drawer.open .menu-links li:nth-child(3) { transition-delay: 0.2s; }
+.menu-drawer.open .menu-links li:nth-child(4) { transition-delay: 0.25s; }
+.menu-drawer.open .menu-links li:nth-child(5) { transition-delay: 0.3s; }
+.menu-drawer.open .menu-links li:nth-child(6) { transition-delay: 0.35s; }
 
 .menu-links a {
     color: var(--text-cream);
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     transition: color 0.3s, padding-left 0.3s;
     display: block;
+    padding: 8px 0;
 }
 
 .menu-links a:hover {
     color: var(--text-gold);
-    padding-left: 10px;
+    padding-left: 8px;
 }
 
 .cart-items {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 15px;
+    -webkit-overflow-scrolling: touch;
 }
 .empty-cart {
     display: flex;
@@ -715,18 +789,18 @@ footer {
     border: 1px solid var(--glass-border);
 }
 .empty-cart img {
-    height: 90px;
-    margin-bottom: 16px;
+    height: 70px;
+    margin-bottom: 15px;
     opacity: 0.9;
 }
 
 .cart-item {
     display: flex;
-    gap: 15px;
-    padding: 15px;
+    gap: 12px;
+    padding: 12px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    margin-bottom: 15px;
+    border-radius: 12px;
+    margin-bottom: 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
@@ -737,10 +811,10 @@ footer {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
-.cart-item-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 12px;
+.cart-item img {
+    width: 65px;
+    height: 65px;
+    border-radius: 10px;
     object-fit: cover;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -750,42 +824,52 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 0;
 }
 
 .cart-item-name {
     font-family: var(--font-body);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #fff;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     font-weight: 600;
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cart-item-meta {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 5px;
 }
 
 .cart-item-price {
-    font-size: 1rem;
-    color: #ffc107;
-    font-weight: 800;
-    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: var(--text-gold);
+    font-weight: 700;
+    margin-bottom: 6px;
 }
 
-.cart-item-controls {
+.cart-item-qty {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .qty-btn {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     transition: all 0.2s;
 }
 
@@ -793,39 +877,38 @@ footer {
     background: rgba(255, 255, 255, 0.2);
 }
 
-.remove-item {
+.cart-item-remove {
     color: #ff4757;
-    background: none;
-    border: none;
     cursor: pointer;
-    font-size: 0.8rem;
-    margin-left: auto;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
-    gap: 5px;
-    opacity: 0.7;
-    transition: opacity 0.2s;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    transition: all 0.2s;
 }
 
-.remove-item:hover {
-    opacity: 1;
+.cart-item-remove:hover {
+    background: rgba(255, 71, 87, 0.1);
 }
 
 .cart-footer {
-    padding: 30px;
-    background: rgba(10, 14, 20, 0.9);
+    padding: 20px;
+    background: rgba(10, 14, 20, 0.95);
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-checkout {
     width: 100%;
-    padding: 18px;
+    padding: 16px;
     background: var(--text-gold);
     color: #000;
     border: none;
     border-radius: 12px;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
@@ -833,8 +916,8 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    font-size: 0.9rem;
+    gap: 8px;
+    font-size: 0.85rem;
 }
 
 .btn-checkout:hover {
@@ -842,25 +925,27 @@ footer {
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
+
 .checkout-email {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 18px;
+    margin-bottom: 15px;
 }
 .checkout-email input {
     width: 100%;
     padding: 12px 14px;
     background: rgba(0,0,0,0.3);
     border: 1px solid rgba(224, 192, 151, 0.2);
-    border-radius: 12px;
+    border-radius: 10px;
     color: var(--text-cream);
     font-family: var(--font-body);
     font-size: 0.9rem;
     outline: none;
+    box-sizing: border-box;
 }
 .checkout-email input::placeholder {
-    color: rgba(244, 241, 234, 0.6);
+    color: rgba(244, 241, 234, 0.5);
 }
 
 .total-price {
@@ -868,22 +953,22 @@ footer {
     justify-content: space-between;
     font-family: var(--font-body);
     color: #fff;
-    font-size: 1.1rem;
-    margin-bottom: 25px;
+    font-size: 1rem;
+    margin-bottom: 18px;
     font-weight: 500;
 }
 
 .total-price span:last-child {
-    color: #fff;
-    font-weight: 800;
-    font-size: 1.4rem;
+    color: var(--text-gold);
+    font-weight: 700;
+    font-size: 1.3rem;
 }
 
 .overlay {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(3px);
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
     z-index: 900;
     opacity: 0;
     pointer-events: none;
@@ -896,37 +981,34 @@ footer {
 }
 
 /* -------------------------------------------------------
-   DRAWER & MODAL UI UPDATES (OVERRIDES)
+   TOAST NOTIFICATION
    ------------------------------------------------------- */
-.menu-drawer, .cart-drawer {
-    /* Kept for specificity if needed, but main styles are above */
-    border-color: rgba(224, 192, 151, 0.1);
-}
-
-.search-box input {
-    width: 190px;
-    padding: 8px 12px;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(224, 192, 151, 0.2);
-    border-radius: 4px;
-    color: var(--text-cream);
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-}
-
-.search-box input::placeholder {
-    color: rgba(244, 241, 234, 0.5);
-}
-
-/* Toast */
 .toast {
-    background-color: var(--text-gold);
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--text-gold);
     color: var(--bg-dark);
+    padding: 14px 28px;
+    border-radius: 10px;
     font-family: var(--font-body);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 3000;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-/* Modal Glass Styling */
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* -------------------------------------------------------
+   MODAL STYLING
+   ------------------------------------------------------- */
 .modal {
     display: none; 
     position: fixed; 
@@ -936,21 +1018,22 @@ footer {
     width: 100%; 
     height: 100%; 
     overflow: auto; 
-    background-color: rgba(0,0,0,0.8); 
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background-color: rgba(0,0,0,0.85); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .modal-content {
     background: var(--bg-card);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    margin: 40px auto; 
+    margin: 20px auto; 
     width: 95%; 
-    max-width: 1000px;
+    max-width: 950px;
+    max-height: 90vh;
     display: flex;
     border: 1px solid var(--glass-border);
-    border-radius: 24px;
+    border-radius: 20px;
     box-shadow: 0 40px 100px rgba(0,0,0,0.6);
     position: relative;
     animation: modalReveal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -964,21 +1047,22 @@ footer {
 
 .close-modal {
     position: absolute;
-    top: 20px;
-    right: 25px;
+    top: 15px;
+    right: 20px;
     color: var(--text-gold);
-    font-size: 2.2rem;
+    font-size: 2rem;
     cursor: pointer;
     z-index: 100;
     line-height: 1;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
+    border: none;
 }
 
 .close-modal:hover {
@@ -989,27 +1073,24 @@ footer {
 .modal-body {
     display: flex;
     width: 100%;
-}
-
-@media (max-width: 900px) {
-    .modal-body { flex-direction: column; }
-    .modal-content { margin: 0; width: 100%; height: 100vh; border-radius: 0; overflow-y: auto; }
+    overflow: hidden;
 }
 
 .modal-left {
-    flex: 1.2;
+    flex: 1.1;
     background: rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 15px;
+    overflow-y: auto;
 }
 
 .modal-img-container {
     position: relative;
     width: 100%;
-    height: 500px;
-    margin-bottom: 20px;
-    border-radius: 16px;
+    height: 400px;
+    margin-bottom: 15px;
+    border-radius: 14px;
     overflow: hidden;
     background: #000;
 }
@@ -1023,18 +1104,18 @@ footer {
 
 .modal-thumbnails {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     overflow-x: auto;
-    padding: 10px 0;
+    padding: 8px 0;
     scrollbar-width: none;
 }
 
 .modal-thumbnails::-webkit-scrollbar { display: none; }
 
 .thumb-img {
-    width: 70px;
-    height: 70px;
-    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
     object-fit: cover;
     border: 2px solid transparent;
     cursor: pointer;
@@ -1051,229 +1132,457 @@ footer {
 
 .modal-info {
     flex: 1;
-    padding: 50px 40px;
+    padding: 35px 30px;
     display: flex;
     flex-direction: column;
     background: rgba(255, 255, 255, 0.02);
+    overflow-y: auto;
 }
 
 .modal-info h2 {
     font-family: var(--font-head);
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     color: var(--text-gold);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     letter-spacing: 1px;
 }
 
 .modal-price {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .modal-description {
-    font-size: 1rem;
-    line-height: 1.8;
+    font-size: 0.95rem;
+    line-height: 1.7;
     color: rgba(255,255,255,0.7);
-    margin-bottom: 40px;
+    margin-bottom: 25px;
     border-bottom: 1px solid var(--glass-border);
-    padding-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 .modal-opt-group {
-    margin-bottom: 25px;
+    margin-bottom: 18px;
 }
 
 .modal-opt-label {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     color: var(--text-gold);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     opacity: 0.8;
 }
 
 .modal-select {
     width: 100%;
-    padding: 15px;
+    padding: 12px 14px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     color: var(--text-cream);
     font-family: var(--font-body);
-    font-size: 0.95rem;
-    border-radius: 12px;
+    font-size: 0.9rem;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+    outline: none;
 }
 
 .modal-select:focus {
-    outline: none;
     border-color: var(--text-gold);
     background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-add-modal {
     width: 100%;
-    padding: 20px;
+    padding: 16px;
     background: var(--text-gold);
     color: #000;
     border: none;
-    border-radius: 16px;
-    font-size: 0.95rem;
-    font-weight: 800;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .btn-add-modal:hover {
     background: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
 
-/* Hide the old btn-checkout class inside modal */
-.modal-info .btn-checkout { display: none; }
-
-/* Responsive Modal */
-@media (max-width: 900px) {
-    .modal-content {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        max-width: none;
-        flex-direction: column;
-        overflow-y: auto;
-    }
-    
-    .modal-body {
-        flex-direction: column;
-    }
-
-    .modal-left {
-        height: 50vh;
-        padding: 0;
-    }
-
-    .modal-img {
-        height: 100%;
-    }
-
-    .modal-info {
-        padding: 30px 20px;
-    }
-    
-    .close-modal {
-        top: 10px;
-        right: 15px;
-        background: rgba(0,0,0,0.5);
-        width: 40px;
-        height: 40px;
-        text-align: center;
-        border-radius: 50%;
-    }
+/* -------------------------------------------------------
+   SIZE GUIDE MODAL
+   ------------------------------------------------------- */
+.size-guide-content {
+    padding: 20px;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-/* Responsive Global */
+.size-guide-content h2 {
+    font-family: var(--font-head);
+    color: var(--text-gold);
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+}
+
+.size-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+.size-table th,
+.size-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.size-table th {
+    background: rgba(216, 163, 93, 0.15);
+    color: var(--text-gold);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.size-table td {
+    color: var(--text-cream);
+}
+
+.size-table tr:nth-child(even) {
+    background: rgba(255,255,255,0.03);
+}
+
+.size-guide-note {
+    background: rgba(216, 163, 93, 0.08);
+    border: 1px solid rgba(216, 163, 93, 0.2);
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+.size-guide-note h4 {
+    color: var(--text-gold);
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+}
+
+.size-guide-note p {
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.size-guide-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.size-tab {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-cream);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.size-tab.active,
+.size-tab:hover {
+    background: var(--text-gold);
+    color: var(--bg-dark);
+    border-color: var(--text-gold);
+}
+
+/* -------------------------------------------------------
+   TRACK ORDER MODAL
+   ------------------------------------------------------- */
+#track-modal .modal-content {
+    max-width: 500px;
+}
+
+#track-modal .modal-body {
+    flex-direction: column;
+    padding: 30px;
+}
+
+#track-modal h3 {
+    margin-bottom: 10px;
+    color: var(--text-gold);
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+}
+
+#track-modal p {
+    opacity: 0.7;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    color: var(--text-cream);
+}
+
+.track-inputs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.track-inputs input {
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: var(--text-cream);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.track-inputs input:focus {
+    border-color: var(--text-gold);
+}
+
+.track-inputs input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+/* -------------------------------------------------------
+   PRESTIGE LOADER
+   ------------------------------------------------------- */
+#prestige-loader {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease;
+}
+
+#prestige-loader img {
+    height: 80px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(224, 192, 151, 0.2));
+}
+
+.loader-line {
+    width: 40px;
+    height: 1px;
+    background: var(--text-gold);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { width: 0; opacity: 0; }
+    50% { width: 40px; opacity: 1; }
+    100% { width: 0; opacity: 0; }
+}
+
+/* -------------------------------------------------------
+   RESPONSIVE DESIGN - FIXED BREAKPOINTS
+   ------------------------------------------------------- */
 @media (max-width: 900px) {
-    nav { padding: 14px 18px; }
-    .hero-title { font-size: 3rem; }
-    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
-    .footer-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-    .nav-logo-img { height: 72px; }
-    .nav-actions { gap: 12px; }
-    .menu-btn { font-size: 1.6rem; }
-    .add-to-cart-btn { opacity: 1; transform: translateY(0); }
-    .product-info h3 { font-size: 0.85rem; }
-    .product-info .price { font-size: 0.9rem; }
-    .search-box { display: none; }
+    nav { padding: 10px 15px; }
+    .nav-logo-img { height: 42px; }
+    .search-box input { width: 130px; }
+    .search-box input:focus { width: 160px; }
+    
+    .hero { padding: 120px 15px 60px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    
+    .modal-content { 
+        margin: 0; 
+        width: 100%; 
+        height: 100vh;
+        height: 100dvh;
+        max-width: none; 
+        flex-direction: column; 
+        overflow-y: auto; 
+        border-radius: 0;
+    }
+    
+    .modal-body { flex-direction: column; }
+    .modal-left { height: 45vh; padding: 10px; }
+    .modal-img-container { height: 100%; }
+    .modal-info { padding: 25px 20px; }
+    .modal-info h2 { font-size: 1.5rem; }
+    .modal-price { font-size: 1.3rem; }
+    
+    .footer-content { 
+        grid-template-columns: 1fr 1fr; 
+        gap: 30px; 
+    }
+    .brand-col { grid-column: 1 / -1; text-align: center; }
 }
 
 @media (max-width: 600px) {
-    nav { padding: 12px 14px; }
-    .hero { padding: 110px 16px; }
-    .hero-title { font-size: 2.5rem; }
-    .collection-header { margin: 70px 0 30px; }
-    .nav-actions { gap: 10px; }
-    .nav-logo-img { height: 60px; }
-    .grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); gap: 12px; }
-    .product-info { padding: 10px 0; }
-    .product-info h3 { font-size: 0.82rem; }
+    nav { padding: 10px 12px; }
+    .nav-logo-img { height: 38px; }
+    .menu-btn { width: 38px; height: 38px; font-size: 1rem; }
+    .cart-icon { width: 38px; height: 38px; }
+    .search-box { display: none; }
+    
+    .hero { padding: 100px 12px 50px; }
+    .hero-title { font-size: 2rem; }
+    .hero-subtitle { font-size: 0.7rem; letter-spacing: 2px; }
+    
+    .collection-header { margin: 40px 0 20px; }
+    .category-title { font-size: 1.4rem; }
+    
+    .grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; 
+    }
+    
+    .product-card { padding: 8px; }
+    .product-image-container { border-radius: 8px; margin-bottom: 8px; }
+    .product-info h3 { font-size: 0.75rem; }
+    .product-info .price { font-size: 0.9rem; }
+    
+    .view-options-btn { 
+        opacity: 1; 
+        transform: translateY(0); 
+        padding: 6px 10px;
+        font-size: 0.7rem;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .menu-drawer, .cart-drawer { 
+        width: 100%; 
+        max-width: 100%; 
+    }
+    
+    .cart-drawer { max-width: 95vw; }
+    
+    .footer-content { 
+        grid-template-columns: 1fr; 
+        text-align: center; 
+        gap: 30px; 
+    }
+    
+    .newsletter-form { flex-direction: column; align-items: center; }
+    .newsletter-form input { 
+        border-radius: 4px; 
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+    .newsletter-form button { 
+        border-radius: 4px; 
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .size-table { font-size: 0.8rem; }
+    .size-table th, .size-table td { padding: 8px 10px; }
+}
+
+@media (max-width: 380px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .product-info h3 { font-size: 0.7rem; }
     .product-info .price { font-size: 0.85rem; }
-    .menu-drawer, .cart-drawer { width: 100%; max-width: 100%; }
-    .menu-links a { font-size: 1rem; }
-    .cart-drawer { width: 100%; }
-    .modal-left { height: 45vh; }
-    .modal-img { height: 45vh; }
+}
+
+/* Hide scrollbar but keep functionality */
+body::-webkit-scrollbar {
+    width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgba(216, 163, 93, 0.3);
+    border-radius: 3px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: rgba(216, 163, 93, 0.5);
 }
     </style>
     <!-- Favicon -->
     <link rel="icon" href="https://files.fm/thumb.php?i=y628qspy4s" type="image/jpeg">
     
     <script src="https://js.paystack.co/v1/inline.js"></script>
-    <!-- Removed Netlify Identity Script -->
+<base target="_blank">
 </head>
 <body>
 
     <nav>
-        <button class="menu-btn" onclick="toggleMenu()">
+        <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">
             <i class="fas fa-bars"></i>
         </button>
-        <a href="#" class="logo">
+        <a href="#" class="logo" onclick="goToHome()">
             <img src="https://files.fm/thumb.php?i=4wunrd26s5" alt="RARE ROOT" class="nav-logo-img">
         </a>
         <div class="nav-actions">
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search products..." onkeyup="handleSearch(this.value)">
+                <input type="text" id="search-input" placeholder="Search..." onkeyup="handleSearch(this.value)">
             </div>
-            <div class="cart-icon" onclick="toggleCart()">
+            <div class="cart-icon" onclick="toggleCart()" aria-label="Open cart">
                 <i class="fas fa-shopping-cart"></i>
                 <span id="cart-count" class="cart-count">0</span>
             </div>
         </div>
     </nav>
 
-    <header class="hero">
+    <header class="hero" id="home">
         <h1 class="hero-title">RARE ROOT</h1>
         <p class="hero-subtitle">Prestige in Every Thread</p>
         <button class="btn-hero" onclick="document.getElementById('exchange-grid').scrollIntoView({behavior: 'smooth'})">Explore the Collection</button>
     </header>
 
     <!-- Brand Identity Section -->
-    <section class="brand-identity" style="padding: 60px 20px; text-align: center; max-width: 800px; margin: 0 auto;">
-        <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-cream); opacity: 0.9;">
-            <strong style="color: var(--text-gold);">RARE ROOT</strong> is a premium streetwear collective designed for the disciplined. 
+    <section class="brand-identity">
+        <p class="brand-text">
+            <strong>RARE ROOT</strong> is a premium streetwear collective designed for the disciplined. 
             Rooted in Nigeria and serving the global hustle, we provide the high-performance uniform for those who move in silence. 
             Analyzing charts during a late-night trading session or pushing past your limits at the gym, our apparel represents your dedication to the grind.
         </p>
     </section>
 
     <div class="container">
-        <!-- SEARCH BAR -->
-        <div class="search-container"></div>
+        <div class="collection-header">
+            <h2 class="category-title">THE EXCHANGE</h2>
+            <p class="category-subtitle">Calculated Moves. Legacy Built.</p>
+        </div>
+        <div class="grid" id="exchange-grid"></div>
 
-    <div class="collection-header">
-        <h2 class="category-title">THE EXCHANGE</h2>
-        <p class="category-subtitle">Calculated Moves. Legacy Built.</p>
-    </div>
-    <div class="grid" id="exchange-grid"></div>
+        <div class="collection-header">
+            <h2 class="category-title">KINETIC</h2>
+            <p class="category-subtitle">Form Meets Function. The Street Performance Line.</p>
+        </div>
+        <div class="grid" id="kinetic-grid"></div>
 
-    <div class="collection-header">
-        <h2 class="category-title">KINETIC</h2>
-        <p class="category-subtitle">Form Meets Function. The Street Performance Line.</p>
-    </div>
-    <div class="grid" id="kinetic-grid"></div>
-
-    <div class="collection-header">
-        <h2 class="category-title">URBAN ARCHIVE</h2>
-        <p class="category-subtitle">The Signature Street Silhouettes.</p>
-    </div>
-    <div class="grid" id="urban-grid"></div>
-
+        <div class="collection-header">
+            <h2 class="category-title">URBAN ARCHIVE</h2>
+            <p class="category-subtitle">The Signature Street Silhouettes.</p>
+        </div>
+        <div class="grid" id="urban-grid"></div>
     </div>
 
     <!-- Newsletter Section -->
@@ -1281,7 +1590,7 @@ footer {
         <div class="newsletter-content">
             <h3>Join The Inner Circle</h3>
             <p>Exclusive drops, early access, and insider trading.</p>
-            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Welcome to the inner circle.');">
+            <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Welcome to the inner circle!');">
                 <input type="email" placeholder="Enter your email" required>
                 <button type="submit">Subscribe</button>
             </form>
@@ -1293,7 +1602,7 @@ footer {
         <div class="footer-content">
             <div class="footer-col brand-col">
                 <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" class="footer-logo">
-                <p>Prestige in every thread.</p>
+                <p style="color: rgba(244, 241, 234, 0.6); font-size: 0.9rem;">Prestige in every thread.</p>
             </div>
             <div class="footer-col">
                 <h4>Shop</h4>
@@ -1303,16 +1612,15 @@ footer {
             </div>
             <div class="footer-col">
                 <h4>Support</h4>
-                <a href="#">Shipping & Returns</a>
-                <a href="#">Size Guide</a>
+                <a href="#" onclick="openShippingModal(); return false;">Shipping & Returns</a>
+                <a href="#" onclick="openSizeGuide(); return false;">Size Guide</a>
                 <a href="#footer">Contact Us</a>
-                <a href="admin" style="opacity: 0.5; font-size: 0.8rem;">Admin Access</a>
             </div>
             <div class="footer-col">
                 <h4>Stay Connected</h4>
                 <div class="social-links">
-                    <a href="#">Instagram</a>
-                    <a href="#">Twitter</a>
+                    <a href="#" onclick="showToast('Instagram link coming soon'); return false;">Instagram</a>
+                    <a href="#" onclick="showToast('Twitter link coming soon'); return false;">Twitter</a>
                 </div>
             </div>
         </div>
@@ -1327,22 +1635,23 @@ footer {
     <div class="menu-drawer" id="menu-drawer">
         <div class="menu-header">
             <span class="menu-title">Menu</span>
-            <button class="close-menu" onclick="toggleMenu()">×</button>
+            <button class="close-menu" onclick="toggleMenu()" aria-label="Close menu">&times;</button>
         </div>
         <ul class="menu-links">
-            <li><a href="#" onclick="toggleMenu()">Home</a></li>
+            <li><a href="#home" onclick="toggleMenu()">Home</a></li>
             <li><a href="#exchange-grid" onclick="toggleMenu()">The Exchange</a></li>
             <li><a href="#kinetic-grid" onclick="toggleMenu()">Kinetic</a></li>
             <li><a href="#urban-grid" onclick="toggleMenu()">Urban Archive</a></li>
             <li><a href="#footer" onclick="toggleMenu()">Contact</a></li>
-            <li><a href="#" onclick="openTrackModal(); toggleMenu()">Track Order</a></li>
+            <li><a href="#" onclick="openTrackModal(); toggleMenu(); return false;">Track Order</a></li>
         </ul>
     </div>
 
+    <!-- Cart Drawer -->
     <div class="cart-drawer" id="cart-drawer">
         <div class="cart-header">
             <span class="cart-title"><img src="https://files.fm/thumb.php?i=4wunrd26s5" alt="RARE ROOT"></span>
-            <button class="close-cart" onclick="toggleCart()">×</button>
+            <button class="close-cart" onclick="toggleCart()" aria-label="Close cart">&times;</button>
         </div>
         <div class="cart-items" id="cart-items">
             <!-- Items injected by JS -->
@@ -1361,26 +1670,19 @@ footer {
         </div>
     </div>
 
+    <!-- Toast Notification -->
     <div id="toast" class="toast">Notification</div>
 
     <!-- Prestige Loader -->
-    <div id="prestige-loader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-dark); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition: opacity 0.8s ease;">
-        <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT" style="height:100px; margin-bottom:20px; filter:drop-shadow(0 0 10px rgba(224, 192, 151, 0.2));">
-        <div style="width:40px; height:1px; background:var(--text-gold); animation: pulse 1.5s infinite;"></div>
+    <div id="prestige-loader">
+        <img src="https://files.fm/thumb.php?i=y628qspy4s" alt="RARE ROOT">
+        <div class="loader-line"></div>
     </div>
-
-    <style>
-        @keyframes pulse {
-            0% { width: 0; opacity: 0; }
-            50% { width: 40px; opacity: 1; }
-            100% { width: 0; opacity: 0; }
-        }
-    </style>
 
     <!-- Product Details Modal -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <button class="close-modal" onclick="closeModal()" aria-label="Close product details">&times;</button>
             <div class="modal-body" id="modal-body">
                 <!-- Content injected by JS -->
             </div>
@@ -1390,11 +1692,11 @@ footer {
     <!-- Track Order Modal -->
     <div id="track-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeTrackModal()">&times;</span>
+            <button class="close-modal" onclick="closeTrackModal()" aria-label="Close track order">&times;</button>
             <div class="modal-body">
-                <h3 style="margin-bottom:10px; color: var(--text-gold);">Track Your Order</h3>
-                <p style="opacity:0.7; font-size:0.9rem; margin-bottom:15px;">Enter your tracking code or order reference (RR-...).</p>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                <h3>Track Your Order</h3>
+                <p>Enter your tracking code or order reference (RR-...).</p>
+                <div class="track-inputs">
                     <input type="text" id="track-code" placeholder="Tracking Code">
                     <input type="text" id="track-ref" placeholder="Order Reference (RR-...)">
                 </div>
@@ -1404,7 +1706,129 @@ footer {
         </div>
     </div>
 
-    <!-- Script removed for GitHub Pages compatibility -->
+    <!-- Size Guide Modal -->
+    <div id="size-guide-modal" class="modal">
+        <div class="modal-content" style="max-width: 750px;">
+            <button class="close-modal" onclick="closeSizeGuide()" aria-label="Close size guide">&times;</button>
+            <div class="size-guide-content">
+                <h2>Size Guide</h2>
+                
+                <div class="size-guide-tabs">
+                    <button class="size-tab active" onclick="showSizeTab('tops')">Tops & T-Shirts</button>
+                    <button class="size-tab" onclick="showSizeTab('bottoms')">Bottoms & Shorts</button>
+                    <button class="size-tab" onclick="showSizeTab('accessories')">Accessories</button>
+                </div>
+                
+                <div id="size-tops" class="size-tab-content">
+                    <table class="size-table">
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Chest (cm)</th>
+                                <th>Chest (in)</th>
+                                <th>Length (cm)</th>
+                                <th>Length (in)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>XS</td><td>86-91</td><td>34-36</td><td>66</td><td>26</td></tr>
+                            <tr><td>S</td><td>92-97</td><td>36-38</td><td>69</td><td>27</td></tr>
+                            <tr><td>M</td><td>98-103</td><td>38-40</td><td>72</td><td>28</td></tr>
+                            <tr><td>L</td><td>104-109</td><td>41-43</td><td>75</td><td>29.5</td></tr>
+                            <tr><td>XL</td><td>110-115</td><td>43-45</td><td>78</td><td>31</td></tr>
+                            <tr><td>XXL</td><td>116-121</td><td>46-48</td><td>81</td><td>32</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="size-bottoms" class="size-tab-content" style="display: none;">
+                    <table class="size-table">
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Waist (cm)</th>
+                                <th>Waist (in)</th>
+                                <th>Hip (cm)</th>
+                                <th>Hip (in)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>XS</td><td>71-76</td><td>28-30</td><td>86-91</td><td>34-36</td></tr>
+                            <tr><td>S</td><td>76-81</td><td>30-32</td><td>91-96</td><td>36-38</td></tr>
+                            <tr><td>M</td><td>81-86</td><td>32-34</td><td>96-101</td><td>38-40</td></tr>
+                            <tr><td>L</td><td>86-91</td><td>34-36</td><td>101-106</td><td>40-42</td></tr>
+                            <tr><td>XL</td><td>91-96</td><td>36-38</td><td>106-111</td><td>42-44</td></tr>
+                            <tr><td>XXL</td><td>96-101</td><td>38-40</td><td>111-116</td><td>44-46</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="size-accessories" class="size-tab-content" style="display: none;">
+                    <table class="size-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Size</th>
+                                <th>Measurement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Caps</td><td>One Size</td><td>Adjustable (56-60cm)</td></tr>
+                            <tr><td>Beanies</td><td>One Size</td><td>Stretch fit</td></tr>
+                            <tr><td>Bags</td><td>Standard</td><td>40cm x 30cm x 12cm</td></tr>
+                            <tr><td>Socks</td><td>S/M/L</td><td>EU 38-41 / 42-45 / 46-49</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="size-guide-note">
+                    <h4><i class="fas fa-ruler"></i> How to Measure</h4>
+                    <p><strong>Chest:</strong> Measure around the fullest part of your chest, keeping the tape horizontal.<br>
+                    <strong>Waist:</strong> Measure around your natural waistline, keeping the tape comfortably loose.<br>
+                    <strong>Hip:</strong> Measure around the fullest part of your hips.<br><br>
+                    All measurements are garment dimensions. For a relaxed fit, consider sizing up.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shipping & Returns Modal -->
+    <div id="shipping-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="close-modal" onclick="closeShippingModal()" aria-label="Close shipping info">&times;</button>
+            <div class="modal-body" style="flex-direction: column; padding: 35px;">
+                <h2 style="font-family: var(--font-head); color: var(--text-gold); margin-bottom: 25px; text-align: center;">Shipping & Returns</h2>
+                
+                <div style="margin-bottom: 25px;">
+                    <h4 style="color: var(--text-gold); margin-bottom: 10px;"><i class="fas fa-truck"></i> Shipping</h4>
+                    <p style="color: rgba(255,255,255,0.7); line-height: 1.7; font-size: 0.95rem;">
+                        • <strong>Standard Delivery:</strong> 3-5 business days (Lagos), 5-7 business days (Nigeria)<br>
+                        • <strong>Express Delivery:</strong> 1-2 business days (Lagos only)<br>
+                        • <strong>International:</strong> 7-14 business days<br>
+                        • Free shipping on orders over ₦50,000
+                    </p>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h4 style="color: var(--text-gold); margin-bottom: 10px;"><i class="fas fa-undo"></i> Returns</h4>
+                    <p style="color: rgba(255,255,255,0.7); line-height: 1.7; font-size: 0.95rem;">
+                        • Items can be returned within 14 days of delivery<br>
+                        • Items must be unworn, unwashed, with original tags attached<br>
+                        • Sale items are final sale and cannot be returned<br>
+                        • Return shipping costs are the customer's responsibility
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 style="color: var(--text-gold); margin-bottom: 10px;"><i class="fas fa-envelope"></i> Need Help?</h4>
+                    <p style="color: rgba(255,255,255,0.7); line-height: 1.7; font-size: 0.95rem;">
+                        Contact us at <a href="mailto:support@rareroot.com" style="color: var(--text-gold);">support@rareroot.com</a> for any shipping or return inquiries.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
 // ------------------------------------------------
 // 1. DATABASE & STATE
@@ -1413,10 +1837,18 @@ let products = [];
 let cart = [];
 let currentModalProduct = null;
 let db;
+let currentSizeTab = 'tops';
+
 const PAYSTACK_PUBLIC_KEY = 'pk_test_74a74bdf05a89708936bc958ca3ddadf8ab3b3ef'; 
+
+// Navigation History State
+let navigationHistory = [];
+let isNavigatingBack = false;
+
 function saveCart() {
     try { localStorage.setItem('rr_cart', JSON.stringify(cart)); } catch (e) {}
 }
+
 function loadCart() {
     try { 
         const s = localStorage.getItem('rr_cart'); 
@@ -1424,7 +1856,7 @@ function loadCart() {
     } catch (e) {}
 }
 
-// Firebase Configuration (Replace with your actual keys from Firebase Console)
+// Firebase Configuration
 const FIREBASE_CONFIG = { 
     apiKey: "AIzaSyDUemRdj8Q65vuid8ePqliNdrUmCBQjAiQ", 
     authDomain: "rare-root.firebaseapp.com", 
@@ -1462,7 +1894,7 @@ async function fetchProducts() {
     } catch (error) {
         console.error('Error loading products from Firebase:', error);
         
-        // Fallback to local JSON if Firebase fails (for development/first run)
+        // Fallback to local JSON if Firebase fails
         try {
             const response = await fetch('data/products.json');
             const data = await response.json();
@@ -1484,30 +1916,10 @@ function hideLoader() {
     }
 }
 
-
-
 function initializeShop() {
-    // Render all categories
-    const categories = [...new Set(products.map(p => p.category))];
-    
-    // Clear existing grids first (in case of re-init)
-    document.querySelectorAll('.grid').forEach(grid => grid.innerHTML = '');
-
-    // 1. Render explicitly defined sections in HTML
     renderCategory("The Exchange", "exchange-grid");
     renderCategory("Kinetic", "kinetic-grid");
     renderCategory("Urban Archive", "urban-grid");
-    
-    // 2. Future proof: If we have new categories from Firebase that don't have a specific grid, 
-    // we could dynamically create them here. For now, we stick to the prestige layout.
-    // To show ALL products regardless of category if the user adds new ones:
-    const definedCategories = ["The Exchange", "Kinetic", "Urban Archive"];
-    const otherCategories = categories.filter(c => !definedCategories.includes(c));
-    
-    if (otherCategories.length > 0) {
-        console.log("New categories found in database:", otherCategories);
-        // We could append them to the bottom of the page if needed
-    }
 }
 
 // ------------------------------------------------
@@ -1517,17 +1929,14 @@ function renderCategory(categoryName, elementId) {
     const container = document.getElementById(elementId);
     if (!container) return; 
     
-    // Filter by category and ensure not hidden
     const items = products.filter(p => ((p.category || '').toLowerCase().trim() === categoryName.toLowerCase().trim()) && !p.hidden);
     
     if (items.length === 0) {
-        // Optional: Hide section if empty
-        // container.previousElementSibling.style.display = 'none';
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; opacity:0.5;">Coming Soon</p>';
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align:center; opacity:0.5; padding: 40px;">Coming Soon</p>';
         return;
     }
 
-    container.innerHTML = ''; // Clear current content
+    container.innerHTML = '';
     
     items.forEach(product => {
         const card = document.createElement('div');
@@ -1574,7 +1983,9 @@ function openProductModal(id) {
     const modal = document.getElementById('product-modal');
     const modalBody = document.getElementById('modal-body');
 
-    // Price Logic
+    // Push state for back button support
+    pushModalState('product');
+
     let priceDisplay = `₦${product.price.toLocaleString()}`;
     let actualPrice = product.price;
     if (product.sale_price) {
@@ -1583,30 +1994,23 @@ function openProductModal(id) {
     }
     const isOut = (product.stock || '').toLowerCase() === 'out of stock';
 
-    // Generate Size Options
     let sizeOptions = product.sizes ? product.sizes.map(s => `<option value="${s}">${s}</option>`).join('') : '<option>One Size</option>';
     
-    // Generate Color/Variant Logic
     let variants = product.variants || [];
-    
-    // Fallback for legacy products
     if (variants.length === 0 && product.colors) {
         variants = product.colors.map(c => ({
             color: c.color,
-            image: product.img // Use main image as fallback
+            image: product.img
         }));
     }
-    // If still no variants, create a dummy one
     if (variants.length === 0) {
         variants = [{color: 'Standard', image: product.img}];
     }
 
-    // Generate Options
     const colorOptions = variants.map(v => 
         `<option value="${v.color}" data-img="${v.image}">${v.color}</option>`
     ).join('');
 
-    // Generate Thumbnails
     let thumbnailsHtml = '';
     if (variants.length > 1) {
         thumbnailsHtml = `
@@ -1620,7 +2024,6 @@ function openProductModal(id) {
             </div>`;
     }
 
-    // Initial Image (first variant or product main image)
     const initialImg = variants[0].image || product.img;
 
     modalBody.innerHTML = `
@@ -1631,7 +2034,7 @@ function openProductModal(id) {
             ${thumbnailsHtml}
         </div>
         <div class="modal-info">
-            <div style="margin-bottom: 5px; opacity: 0.6; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;">Rare Root</div>
+            <div style="margin-bottom: 5px; opacity: 0.6; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px;">Rare Root</div>
             <h2>${product.name}</h2>
             <div class="modal-price">${priceDisplay}</div>
             
@@ -1659,10 +2062,9 @@ function openProductModal(id) {
         </div>
     `;
 
-    // Add Swipe Logic
     initSwipe(variants);
-
     modal.style.display = "block";
+    document.body.style.overflow = 'hidden';
 }
 
 function initSwipe(variants) {
@@ -1680,12 +2082,10 @@ function initSwipe(variants) {
         const endX = e.changedTouches[0].clientX;
         const diff = startX - endX;
 
-        if (Math.abs(diff) > 50) { // Threshold for swipe
+        if (Math.abs(diff) > 50) {
             if (diff > 0) {
-                // Swipe Left -> Next
                 currentIndex = (currentIndex + 1) % variants.length;
             } else {
-                // Swipe Right -> Prev
                 currentIndex = (currentIndex - 1 + variants.length) % variants.length;
             }
             const v = variants[currentIndex];
@@ -1704,13 +2104,11 @@ function updateModalImage(src, color, thumbEl) {
         }, 200);
     }
     
-    // Also update the select dropdown if color is provided
     if (color) {
         const select = document.getElementById('modal-color');
         if (select) select.value = color;
     }
 
-    // Update active thumbnail state
     if (thumbEl) {
         document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
         thumbEl.classList.add('active');
@@ -1726,7 +2124,6 @@ function onColorChange(select) {
         const img = document.getElementById('modal-main-img');
         if(img) img.src = imgSrc;
         
-        // Find matching thumbnail to highlight
         const thumbnails = document.querySelectorAll('.thumb-img');
         thumbnails.forEach(thumb => {
             if (thumb.getAttribute('alt') === color) {
@@ -1740,15 +2137,68 @@ function onColorChange(select) {
 
 function closeModal() {
     document.getElementById('product-modal').style.display = "none";
+    document.body.style.overflow = '';
     currentModalProduct = null;
 }
 
-function openTrackModal() {
-    document.getElementById('track-modal').style.display = "block";
+// ------------------------------------------------
+// 4. SIZE GUIDE MODAL
+// ------------------------------------------------
+function openSizeGuide() {
+    pushModalState('size-guide');
+    document.getElementById('size-guide-modal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
 }
+
+function closeSizeGuide() {
+    document.getElementById('size-guide-modal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function showSizeTab(tab) {
+    currentSizeTab = tab;
+    
+    // Update tab buttons
+    document.querySelectorAll('.size-tab').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Show corresponding content
+    document.querySelectorAll('.size-tab-content').forEach(content => {
+        content.style.display = 'none';
+    });
+    document.getElementById('size-' + tab).style.display = 'block';
+}
+
+// ------------------------------------------------
+// 5. SHIPPING MODAL
+// ------------------------------------------------
+function openShippingModal() {
+    pushModalState('shipping');
+    document.getElementById('shipping-modal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeShippingModal() {
+    document.getElementById('shipping-modal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+// ------------------------------------------------
+// 6. TRACK ORDER MODAL
+// ------------------------------------------------
+function openTrackModal() {
+    pushModalState('track');
+    document.getElementById('track-modal').style.display = "block";
+    document.body.style.overflow = 'hidden';
+}
+
 function closeTrackModal() {
     document.getElementById('track-modal').style.display = "none";
+    document.body.style.overflow = '';
 }
+
 async function findOrder() {
     try {
         initFirebase();
@@ -1773,7 +2223,7 @@ async function findOrder() {
         const o = { id: doc.id, ...doc.data() };
         const itemsList = (o.items || []).map(i => `${i.name} • ${i.size}/${i.color} x${i.qty || 1}`).join('<br>');
         resultEl.innerHTML = `
-            <div class="glass-card" style="padding:12px;">
+            <div class="glass-card" style="padding:15px;">
                 <div style="font-weight:bold; color:var(--text-gold);">Status: ${o.status || 'paid'}</div>
                 <div style="margin-top:8px; font-size:0.9rem; opacity:0.8;">Total: ₦${(o.total || 0).toLocaleString()}</div>
                 ${o.trackingCode ? `<div style="margin-top:8px;">Tracking Code: <strong>${o.trackingCode}</strong></div>` : ''}
@@ -1782,18 +2232,60 @@ async function findOrder() {
         `;
     } catch (e) {
         console.error(e);
-        alert('Failed to track order. Try again.');
+        showToast('Failed to track order. Try again.');
     }
 }
+
+// ------------------------------------------------
+// 7. NAVIGATION HISTORY (BACK BUTTON SUPPORT)
+// ------------------------------------------------
+function pushModalState(modalType) {
+    if (!isNavigatingBack) {
+        navigationHistory.push({ type: modalType });
+        history.pushState({ modal: modalType }, '', window.location.href);
+    }
+    isNavigatingBack = false;
+}
+
+function goToHome() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return false;
+}
+
+// Handle browser back button
+window.addEventListener('popstate', function(event) {
+    isNavigatingBack = true;
+    
+    // Close all modals
+    closeModal();
+    closeTrackModal();
+    closeSizeGuide();
+    closeShippingModal();
+    closeAllDrawers();
+    
+    // Remove last history entry
+    if (navigationHistory.length > 0) {
+        navigationHistory.pop();
+    }
+});
 
 // Close modal when clicking outside
 window.onclick = function(event) {
-    const modal = document.getElementById('product-modal');
-    if (event.target == modal) {
-        closeModal();
-    }
+    const modals = ['product-modal', 'track-modal', 'size-guide-modal', 'shipping-modal'];
+    modals.forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (event.target === modal) {
+            if (modalId === 'product-modal') closeModal();
+            else if (modalId === 'track-modal') closeTrackModal();
+            else if (modalId === 'size-guide-modal') closeSizeGuide();
+            else if (modalId === 'shipping-modal') closeShippingModal();
+        }
+    });
 }
 
+// ------------------------------------------------
+// 8. CART LOGIC
+// ------------------------------------------------
 function addToCartFromModal() {
     if (!currentModalProduct) return;
 
@@ -1805,7 +2297,6 @@ function addToCartFromModal() {
 
     const price = currentModalProduct.sale_price || currentModalProduct.price;
 
-    // Check if item already in cart with same size and color
     const existingItem = cart.find(item => 
         item.id === currentModalProduct.id && 
         item.selectedSize === size && 
@@ -1834,19 +2325,14 @@ function addToCartFromModal() {
     toggleCart();
 }
 
-// ------------------------------------------------
-// 4. CART LOGIC
-// ------------------------------------------------
 function updateCartUI() {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartCount = document.getElementById('cart-count');
     const cartTotal = document.getElementById('cart-total');
 
-    // Update Count
     const totalQty = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
     cartCount.innerText = totalQty;
 
-    // Update Items
     cartItemsContainer.innerHTML = '';
     let total = 0;
 
@@ -1854,7 +2340,8 @@ function updateCartUI() {
         cartItemsContainer.innerHTML = `
             <div class="empty-cart">
                 <img src="https://files.fm/thumb.php?i=4wunrd26s5" alt="RARE ROOT">
-                <button class="btn-checkout" style="margin-top: 2rem;" onclick="toggleCart()">START SHOPPING</button>
+                <p style="opacity: 0.6; margin-top: 10px;">Your bag is empty</p>
+                <button class="btn-checkout" style="margin-top: 1.5rem;" onclick="toggleCart()">START SHOPPING</button>
             </div>
         `;
     } else {
@@ -1884,7 +2371,6 @@ function updateCartUI() {
         });
     }
 
-    // Update Total
     cartTotal.innerText = '₦' + total.toLocaleString();
 }
 
@@ -1901,31 +2387,54 @@ function updateQty(cartId, delta) {
     }
 }
 
-function checkoutWhatsApp() {
-    if (cart.length === 0) {
-        showToast("Your bag is empty!");
-        return;
-    }
-
-    let message = "Hello RARE ROOT, I'd like to place an order:\n\n";
-    let total = 0;
-
-    cart.forEach(item => {
-        const itemTotal = item.finalPrice * (item.quantity || 1);
-        message += `• ${item.name}\n`;
-        message += `  Size: ${item.selectedSize}\n`;
-        message += `  Color: ${item.selectedColor}\n`;
-        message += `  Qty: ${item.quantity || 1}\n`;
-        message += `  Price: ₦${itemTotal.toLocaleString()}\n\n`;
-        total += itemTotal;
-    });
-
-    message += `*Total Amount: ₦${total.toLocaleString()}*\n\n`;
-    message += "Please provide payment details.";
-
-    const encodedMessage = encodeURIComponent(message);
+function removeFromCart(cartId) {
+    cart = cart.filter(item => item.cartId !== cartId);
+    updateCartUI();
+    saveCart();
 }
 
+function toggleCart() {
+    const drawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('overlay');
+    
+    if (drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    } else {
+        document.getElementById('menu-drawer').classList.remove('open');
+        drawer.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function toggleMenu() {
+    const drawer = document.getElementById('menu-drawer');
+    const overlay = document.getElementById('overlay');
+    
+    if (drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    } else {
+        document.getElementById('cart-drawer').classList.remove('open');
+        drawer.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeAllDrawers() {
+    document.getElementById('menu-drawer').classList.remove('open');
+    document.getElementById('cart-drawer').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ------------------------------------------------
+// 9. CHECKOUT
+// ------------------------------------------------
 function checkoutPaystack() {
     if (cart.length === 0) {
         showToast("Your bag is empty!");
@@ -2004,66 +2513,20 @@ function recordOrder(email, totalAmount, reference) {
     }
 }
 
-function evaluateCheckoutState() {
-    const btn = document.querySelector('.btn-checkout');
-    const emailInput = document.getElementById('checkout-email');
-    const validEmail = emailInput && emailInput.value.includes('@');
-    const hasItems = cart.length > 0;
-    if (btn) btn.disabled = !(validEmail && hasItems);
-}
-function removeFromCart(cartId) {
-    cart = cart.filter(item => item.cartId !== cartId);
-    updateCartUI();
-    saveCart();
-}
-
-function toggleCart() {
-    const drawer = document.getElementById('cart-drawer');
-    const overlay = document.getElementById('overlay');
-    
-    if (drawer.classList.contains('open')) {
-        drawer.classList.remove('open');
-        overlay.classList.remove('active');
-    } else {
-        document.getElementById('menu-drawer').classList.remove('open');
-        drawer.classList.add('open');
-        overlay.classList.add('active');
-    }
-}
-
-function toggleMenu() {
-    const drawer = document.getElementById('menu-drawer');
-    const overlay = document.getElementById('overlay');
-    
-    if (drawer.classList.contains('open')) {
-        drawer.classList.remove('open');
-        overlay.classList.remove('active');
-    } else {
-        document.getElementById('cart-drawer').classList.remove('open');
-        drawer.classList.add('open');
-        overlay.classList.add('active');
-    }
-}
-
-function closeAllDrawers() {
-    document.getElementById('menu-drawer').classList.remove('open');
-    document.getElementById('cart-drawer').classList.remove('open');
-    document.getElementById('overlay').classList.remove('active');
-}
-
 // ------------------------------------------------
-// 5. SEARCH LOGIC
+// 10. SEARCH LOGIC
 // ------------------------------------------------
 function handleSearch(query) {
     const term = query.toLowerCase();
     
     if (!term) {
-        // Reset to default view
+        document.querySelectorAll('.collection-header').forEach(el => el.style.display = 'block');
+        const resultsHeader = document.getElementById('search-results-header');
+        if (resultsHeader) resultsHeader.style.display = 'none';
         initializeShop();
         return;
     }
 
-    // Find all matching products
     const matches = products.filter(p => 
         !p.hidden && (
             p.name.toLowerCase().includes(term) || 
@@ -2073,21 +2536,12 @@ function handleSearch(query) {
          )
     );
 
-    // Render Search Results (Hi-jack one grid or create a results view)
-    // Strategy: Hide all grids, show results in the first one with a title change
-    
-    // Simplest approach: Filter the existing grids in place? 
-    // No, because a search might return items from multiple categories.
-    // Better: Clear all grids, and render matches into the first grid (The Exchange) and hide others titles.
-    
     document.getElementById('exchange-grid').innerHTML = '';
     document.getElementById('kinetic-grid').innerHTML = '';
     document.getElementById('urban-grid').innerHTML = '';
     
-    // Hide headers temporarily (optional, but cleaner)
     document.querySelectorAll('.collection-header').forEach(el => el.style.display = 'none');
     
-    // Create a temporary results header if not exists
     let resultsHeader = document.getElementById('search-results-header');
     if (!resultsHeader) {
         resultsHeader = document.createElement('div');
@@ -2099,7 +2553,7 @@ function handleSearch(query) {
     resultsHeader.style.display = 'block';
 
     if (matches.length === 0) {
-        document.getElementById('exchange-grid').innerHTML = '<p style="text-align:center; padding:40px;">No products found.</p>';
+        document.getElementById('exchange-grid').innerHTML = '<p style="text-align:center; padding:40px; opacity: 0.6;">No products found.</p>';
     } else {
         const container = document.getElementById('exchange-grid');
         matches.forEach(product => {
@@ -2109,8 +2563,8 @@ function handleSearch(query) {
             
             const isSale = product.sale_price && product.sale_price < product.price;
             const priceDisplay = isSale 
-                ? `<span class="original-price">₦${product.price.toLocaleString()}</span> <span class="sale-price">₦${product.sale_price.toLocaleString()}</span>` 
-                : `₦${product.price.toLocaleString()}`;
+                ? `<span class="original-price">₦${product.price.toLocaleString()}</span> <span class="price">₦${product.sale_price.toLocaleString()}</span>` 
+                : `<span class="price">₦${product.price.toLocaleString()}</span>`;
             
             const discountBadge = isSale 
                 ? `<span class="discount-badge">-${Math.round(((product.price - product.sale_price) / product.price) * 100)}%</span>` 
@@ -2120,9 +2574,9 @@ function handleSearch(query) {
                 <div class="product-image-container">
                     ${discountBadge}
                     <img src="${product.img}" alt="${product.name}" loading="lazy">
-                    <button class="add-to-cart-btn">
-                    VIEW OPTIONS
-                </button>
+                    <button class="view-options-btn">
+                        <i class="fas fa-shopping-cart"></i> VIEW
+                    </button>
                 </div>
                 <div class="product-info">
                     <h3>${product.name}</h3>
@@ -2134,19 +2588,8 @@ function handleSearch(query) {
     }
 }
 
-// Reset view helper (when search is cleared)
-document.getElementById('search-input').addEventListener('input', (e) => {
-    if (e.target.value === '') {
-        document.querySelectorAll('.collection-header').forEach(el => el.style.display = 'block');
-        const resultsHeader = document.getElementById('search-results-header');
-        if (resultsHeader) resultsHeader.style.display = 'none';
-        initializeShop();
-    }
-});
-
-
 // ------------------------------------------------
-// 6. UTILITIES (Toast, Checkout)
+// 11. UTILITIES
 // ------------------------------------------------
 function showToast(message) {
     const toast = document.getElementById("toast");
@@ -2156,33 +2599,32 @@ function showToast(message) {
     setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
 }
 
-function checkout() {
-    if (cart.length === 0) {
-        showToast("Your bag is empty.");
-        return;
-    }
-    let totalAmount = cart.reduce((sum, item) => sum + item.finalPrice, 0);
-    let email = prompt("Enter your email for the receipt:");
-    if (email) {
-        // Simulating Paystack for now
-        alert(`Proceeding to payment of ₦${totalAmount.toLocaleString()} for ${email}`);
-        // In real integration: PaystackPop.setup({...}).openIframe();
-    }
-}
-
 // ------------------------------------------------
 // INITIALIZATION
 // ------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
     loadCart();
     fetchProducts();
-    const savedEmail = (() => { try { return localStorage.getItem('rr_email') || ''; } catch (e) { return ''; } })();
+    
+    const savedEmail = (() => { 
+        try { return localStorage.getItem('rr_email') || ''; } catch (e) { return ''; } 
+    })();
     const emailInput = document.getElementById('checkout-email');
     if (emailInput && savedEmail) { emailInput.value = savedEmail; }
     
-    // Initialize Netlify Identity if present
-    // (Disabled for GitHub Pages compatibility)
-    // if (window.netlifyIdentity) { ... }
+    // Initialize history state
+    history.replaceState({ page: 'home' }, '', window.location.href);
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+        closeTrackModal();
+        closeSizeGuide();
+        closeShippingModal();
+        closeAllDrawers();
+    }
 });
     </script>
 </body>
