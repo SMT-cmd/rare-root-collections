@@ -377,15 +377,21 @@
         .variants-section h4 { font-size: 0.9rem; margin-bottom: 15px; color: var(--text-gold); }
         .variant-row {
             display: grid;
-            grid-template-columns: 1fr 1fr auto;
+            grid-template-columns: 1fr 1fr 180px auto;
             gap: 15px;
-            align-items: center;
+            align-items: start;
             margin-bottom: 15px;
             padding: 15px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
         }
         .variant-row input { margin: 0; }
+        .variant-media { display: flex; flex-direction: column; gap: 8px; }
+        .v-upload-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 10px; border: 1px dashed var(--text-gold); border-radius: 8px; color: var(--text-gold); font-size: 0.75rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; background: rgba(255,215,0,0.06); }
+        .v-upload-btn:hover { background: rgba(255,215,0,0.12); }
+        .v-file { display: none; }
+        .v-preview { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; background: rgba(255,255,255,0.05); display: none; }
+        .v-preview.active { display: block; }
         .btn-remove-variant {
             width: 36px;
             height: 36px;
@@ -1114,11 +1120,47 @@
             div.innerHTML = `
                 <input type="text" placeholder="Color" value="${color}" class="v-color" required>
                 <input type="url" placeholder="Image URL" value="${image}" class="v-image" required>
+                <div class="variant-media">
+                    <label class="v-upload-btn">Upload<input type="file" accept="image/*" class="v-file" onchange="handleFileUpload(this)"></label>
+                    <img class="v-preview ${image ? 'active' : ''}" src="${image || ''}" alt="Preview">
+                </div>
                 <button type="button" class="btn-remove-variant" onclick="this.parentElement.remove()">
                     <i class="fas fa-times"></i>
                 </button>
             `;
             container.appendChild(div);
+        }
+
+        async function handleFileUpload(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const row = input.closest('.variant-row');
+            const urlInput = row.querySelector('.v-image');
+            const preview = row.querySelector('.v-preview');
+            const label = input.parentElement;
+            const originalText = label.textContent;
+            label.textContent = 'Uploading...';
+            label.style.opacity = '0.6';
+            label.style.pointerEvents = 'none';
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', 'rare_root_unsigned');
+                const response = await fetch('https://api.cloudinary.com/v1_1/dttmc2l2n/image/upload', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Upload failed');
+                const data = await response.json();
+                urlInput.value = data.secure_url;
+                preview.src = data.secure_url;
+                preview.classList.add('active');
+                showToast('Image uploaded successfully!');
+            } catch (err) {
+                console.error(err);
+                showToast('Upload failed. Check Cloudinary preset');
+            } finally {
+                label.textContent = originalText;
+                label.style.opacity = '1';
+                label.style.pointerEvents = 'auto';
+            }
         }
 
         async function saveProduct(e) {
